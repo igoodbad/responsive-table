@@ -1,0 +1,283 @@
+<link rel="import" href="../polymer/polymer-element.html">
+
+<dom-module id="responsive-table">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+
+      .table {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        margin-right: auto;
+        margin-left: auto;
+        overflow-x: auto;
+        background-color: pink;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      table td {
+        min-width: 100px;
+      }
+
+      #head-table th:hover {
+        cursor: pointer;
+      }
+
+      .hide-block {
+        display: none;
+      }
+
+      .show-block {
+        display: block;
+      }
+
+      .list-detail {
+        list-style-type: none;
+        margin: 10px 0px;
+        padding: 0;
+        border: 0.07em solid black;
+      }
+
+      .list-detail li {
+        border-top: 0.07em solid black;
+        background-color: #fff;
+        padding: 3px 6px;
+      }
+
+      .list-detail li:first-child {
+        border-top: 0em
+      }
+
+      /* Styling summary */
+      details[open] summary~* {
+        animation: sweep .5s ease-in-out;
+      }
+
+      @keyframes sweep {
+        0% {
+          opacity: 0;
+          margin-left: -10px
+        }
+
+        100% {
+          opacity: 1;
+          margin-left: 0px
+        }
+      }
+
+      details[open] summary {
+        background-color: #cfeaf2;
+        border-bottom: 0.07em solid black;
+      }
+      
+      /* Search element */
+      #search-input{
+        width: 100%;
+      }
+      #search-input input{
+        display: relative;
+        width: 80%;
+        border: none;
+        border-bottom: 2px solid;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        padding: 5px 10px;
+        font-size: 1rem;
+        font-family: verdana;
+
+      }
+
+    </style>
+    <div id="search-input" hidden$="[[!search]]">
+      <input type="text" value="" placeholder$="[[searchPlaceholder]]" on-keyup="_changeSearch" />
+    </div>
+    <div id="containerTable" class="table">
+      <div id="when-large">
+        <table>
+          <thead>
+            <tr id="head-table">
+              <template is="dom-repeat" items="[[headers]]" as="titleHead">
+                <th id="th_[[index]]_asc">[[titleHead]]</th>
+              </template>
+            </tr>
+          </thead>
+          <tbody id="body-table">
+            <template is="dom-repeat" items="[[columnValues]]" as="columValue" filter="{{_filterData(valueSearch)}}">
+              <tr>
+                <template is="dom-repeat" items="[[columValue.data]]" as="cellValue">
+                  <td>[[cellValue.1]]</td>
+                </template>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <div id="when-small">
+        <ul class="list-detail">
+          <li>
+            <details>
+              <summary>a</summary>
+              <p>This the letter a</p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>b</summary>
+              <p>This the letter b</p>
+            </details>
+          </li>
+          <li>
+            <details>
+              <summary>c</summary>
+              <p>This the letter c</p>
+            </details>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </template>
+
+  <script>
+    /**
+     * `responsive-table`
+     * Table full responsive with any devices
+     *
+     * @customElement
+     * @polymer
+     * @demo demo/index.html
+     */
+    class ResponsiveTable extends Polymer.Element {
+      static get is() { return 'responsive-table'; }
+      static get properties() {
+        return {
+          headers: {
+            type: Array,
+            value: () => []
+          },
+          columns: {
+            type: Array,
+            value: () => []
+          },
+          columnValues: {
+            type: Array,
+            computed: "_convertColumn(columns)"
+          },
+          search: {
+            type: Boolean,
+            value: false
+          },
+          searchPlaceholder: {
+            type: String,
+            value: ""
+          },
+          valueSearch: {
+            type: String,
+            value: ''
+          }
+        };
+      }
+      ready() {
+        super.ready();
+        const component = this.$.containerTable;
+        const largeComponent = component.querySelector("#when-large");
+        const smallComponent = component.querySelector("#when-small");
+        if (component.offsetWidth < 601) {
+          largeComponent.hidden = true;
+          smallComponent.hidden = false;
+        } else {
+          largeComponent.hidden = false;
+          smallComponent.hidden = true;
+        }
+        window.addEventListener("resize", function () {
+          if (component.offsetWidth < 601) {
+            largeComponent.hidden = true;
+            smallComponent.hidden = false;
+          } else {
+            largeComponent.hidden = false;
+            smallComponent.hidden = true;
+          }
+        });
+        const headerOrder = component.querySelector("#head-table");
+        headerOrder.addEventListener("click", (event) => {
+          this._reOrderBy(event);
+        });
+      }
+
+      _convertColumn(arrayValues) {
+        let orderValues = [];
+        for (const row of arrayValues) {
+          let rowObject = {};
+          let separed = Object.entries(row);
+          rowObject["id"] = separed[0][1];
+          separed.splice(0, 1);
+          rowObject["data"] = separed;
+          orderValues.push(rowObject);
+        }
+        return orderValues;
+      }
+
+      _reOrderBy(event) {
+        const directriz = event.target.id.split("_");
+        //const headerOrder = this.$.containerTable.querySelector("#head-table");
+        //console.log(headerOrder);
+        if ((Number(directriz[1]) + 1) <= this.columnValues[0].data.length) {
+          const columnOrder = this.columnValues[0].data[directriz[1]][0];
+          let newOrder = [];
+          if (directriz[2] === "asc") {
+            event.target.id = directriz[0] + "_" + directriz[1] + "_desc";
+            newOrder = this.columns.sort(function (a, b) {
+              if (a[columnOrder] > b[columnOrder]) {
+                return 1;
+              }
+              if (a[columnOrder] < b[columnOrder]) {
+                return -1;
+              }
+              return 0;
+            });
+          }
+          if (directriz[2] === "desc") {
+            event.target.id = directriz[0] + "_" + directriz[1] + "_asc";
+            newOrder = this.columns.reverse(function (a, b) {
+              if (a[columnOrder] > b[columnOrder]) {
+                return 1;
+              }
+              if (a[columnOrder] < b[columnOrder]) {
+                return -1;
+              }
+              return 0;
+            });
+          }
+          this.set("columns", [...newOrder]);
+        }
+      }
+
+      _changeSearch() {
+        const word = this.shadowRoot.querySelector("#search-input").querySelector("input");
+        this.set("valueSearch", word.value);
+      }
+
+      _filterData(searchString) {
+        if (!searchString) {
+          return null
+        }
+        return function (dataColumns) {
+          let findMatch = [];
+          for(const value of dataColumns.data){
+            findMatch.push(value[1].toLowerCase().includes(searchString.toLowerCase()));
+          }
+          return findMatch.some(match => match === true);
+        }
+      }
+
+    }
+
+    window.customElements.define(ResponsiveTable.is, ResponsiveTable);
+  </script>
+</dom-module>

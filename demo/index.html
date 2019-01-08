@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>responsive-table demo</title>
+
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+
+  <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
+  <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
+  <link rel="import" href="../responsive-table.html">
+
+  <style>
+    .container {
+      display: block;
+    }
+
+    .size150 {
+      width: 150px;
+    }
+
+    .size576 {
+      width: 576px;
+    }
+
+    .size768 {
+      width: 768px;
+    }
+
+    .size992 {
+      width: 992px;
+    }
+
+    .size1200 {
+      width: 1200px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div>
+      <h3>Live size</h3>
+      <responsive-table></responsive-table>
+      <button type="button" onclick="values2()">Colores</button>
+      <button type="button" onclick="values3()">Otros datos</button>
+      <button type="button" onclick="addSearch()">Agregar Buscador</button>
+    </div>
+  </div>
+  <script>
+    const responsiveTable = document.querySelector("responsive-table");
+    responsiveTable.headers = ["text 1", "text 2", "text3"];
+    responsiveTable.columns = [
+      { id: 1, name: "alexa", alias: "la chida" },
+      { id: 2, name: "siri", alias: "sin futuro" },
+      { id: 3, name: "cortana", alias: "al olvido" }
+    ];
+
+    function values2() {
+      responsiveTable.columns = [
+        { id: "1", color: "red", value: "#f00", after: "gren"},
+        { id: "2", color: "green", value: "#0f0", after: "blue"},
+        { id: "3", color: "blue", value: "#00f", after: "yellow"},
+        { id: "4", color: "cyan", value: "#0ff", after: "black"},
+        { id: "5", color: "magenta", value: "#f0f", after: "grey"},
+        { id: "6", color: "yellow", value: "#ff0", after: "cyan"},
+        { id: "7", color: "black", value: "#000", after: "purple"}
+      ];
+    }
+
+    function values3() {
+      responsiveTable.columns = [
+        { id: 1, name: "otros nuevos", alias: "datos", columna: "1" },
+        { id: 1, name: "otros nuevos", alias: "datos", columna: "2" },
+        { id: 1, name: "otros nuevos", alias: "datos", columna: "3" },
+        { id: 1, name: "otros nuevos", alias: "datos", columna: "4" }
+      ];
+    }
+
+    function addSearch(){
+      responsiveTable.search = true;
+      responsiveTable.searchPlaceholder = "Ingresa la palabra a buscar";
+    }
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+  <title>responsive-table test</title>
+
+  <script src="../../webcomponentsjs/webcomponents-loader.js"></script>
+  <script src="../../web-component-tester/browser.js"></script>
+
+  <link rel="import" href="../responsive-table.html">
+</head>
+
+<body>
+
+  <test-fixture id="CountElements">
+    <template>
+      <responsive-table></responsive-table>
+    </template>
+  </test-fixture>
+
+  <script>
+    suite('responsive-table', () => {
+
+      test('Count length rows', () => {
+        const element = fixture('CountElements');
+        element.headers = ["text 1", "text 2", "text3"];
+        element.columns = [
+          { id: 1, name: "nuevos", alias: "datos", columna: "1" },
+          { id: 1, name: "nuevos", alias: "datos", columna: "4" }
+        ];
+        const elementShadowRoot = element.shadowRoot;
+        const table = elementShadowRoot.querySelector('table').querySelector('tbody');
+        assert.equal(table, 'text');
+      });
+
+      test('Listen render elements when change length', () => {
+        const element = fixture('CountElements');
+        element.headers = ["text 1", "text 2", "text3"];
+        element.columns = [
+          { id: 1, name: "nuevos", alias: "datos", columna: "1" },
+          { id: 1, name: "nuevos", alias: "datos", columna: "4" }
+        ];
+        const whenLargeBlock = element.querySelector("#when-large");
+        const whenSmallBlock = element.querySelector("#when-small");
+        assert.equal(whenLargeBlock);
+      });
+
+    });
+  </script>
+
+</body>
+
+</html>
