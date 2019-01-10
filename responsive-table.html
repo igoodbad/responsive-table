@@ -264,10 +264,14 @@
       </div>
       <div id="modalDialogPreview" class="modalDialog">
         <div>
-          <paper-input label="username">
-            <iron-icon icon="mail" slot="prefix"></iron-icon>
-            <div slot="suffix">@email.com</div>
-          </paper-input>
+          <template is="dom-repeat" items="[[rowSelectedElement]]" as="rowSeltd">
+            <form id="form-edit-[[rowSeltd.rowIndex]]">
+                <template is="dom-repeat" items="[[rowSeltd.data]]">
+                  <paper-input label="[[_getHeader(index)]]" value="[[item.1]]"></paper-input>
+                </template>
+              </form>
+          </template>
+
           <div class="footer-modal">
             <button type="button" class="btn-cancel" on-click="_closeModal">[[textCancelBtn]]</button>
             <button type="button" class="btn-cancel" on-click="_closeModal">[[textSaveBtn]]</button>
@@ -354,8 +358,8 @@
             value: ''
           },
           rowSelectedElement: {
-            type: Object,
-            value: () => { }
+            type: Array,
+            value: () => []
           },
           modalElement: {
             type: Object,
@@ -430,7 +434,7 @@
       }
 
       _removeClassSelected() {
-        this.set("rowSelectedElement", {});
+        this.set("rowSelectedElement", []);
         for (const toCleanRow of this.bodyTableElement.rows) {
           toCleanRow.className = "";
         }
@@ -517,8 +521,9 @@
         //this.columnValues
         rowEvent.className = "selected";
         const rowIndex = rowEvent.id.split("_")[1];
-        const row = this.columns[rowIndex];
-        this.set("rowSelectedElement", row);
+        let row = this._convertColumn([this.columns[rowIndex]])[0];
+        row.rowIndex = rowIndex;
+        this.set("rowSelectedElement", [{...row}]);
         //console.log(rowEvent.cells[0].textContent)
         console.log(this.rowSelectedElement)
       }

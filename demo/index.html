@@ -51,8 +51,12 @@
     </div>
   </div>
   <script>
+    const array1 = ["First name", "Last name", "Age", "Phone number", "Job"];
+    const array2 = ["Color name", "Hexadecimal", "After"];
+    const array3 = ["Name", "Alias", "Columna"];
+
     const responsiveTable = document.querySelector("responsive-table");
-    responsiveTable.headers = ["First name", "Last name", "Age", "Phone number", "Job"];
+    responsiveTable.headers = array1;
     responsiveTable.columns = [
       { id: 1, first_name: "Star", last_name: "Butterfly", age: 14, phone_number:"92948222342", job: "Princess Mewni" },
       { id: 2, first_name: "Marco", last_name: "Díaz", age: 15, phone_number:"(12)12769182", job: "Squire" },
@@ -72,6 +76,7 @@
     ];
 
     function values2() {
+      responsiveTable.headers = array2;
       responsiveTable.columns = [
         { id: "1", color: "red", value: "#f00", after: "gren"},
         { id: "2", color: "green", value: "#0f0", after: "blue"},
@@ -84,6 +89,7 @@
     }
 
     function values3() {
+      responsiveTable.headers = array3;
       responsiveTable.columns = [
         { id: 1, name: "otros nuevos", alias: "datos", columna: "1" },
         { id: 1, name: "otros nuevos", alias: "datos", columna: "2" },

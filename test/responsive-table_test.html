@@ -24,7 +24,7 @@
   <script>
     suite('responsive-table', () => {
 
-      test('Count length rows', () => {
+      test('Count length rows renderized', () => {
         const element = fixture('CountElements');
         element.headers = ["text 1", "text 2", "text3"];
         element.columns = [
@@ -33,10 +33,19 @@
         ];
         const elementShadowRoot = element.shadowRoot;
         const table = elementShadowRoot.querySelector('table').querySelector('tbody');
-        assert.equal(table, 'text');
+        table.querySelector("dom-repeat").render();
+        assert.equal(table.rows.length, 2);
+        element.columns = [
+          { id: 1, name: "nuevos", alias: "datos", columna: "1" },
+          { id: 1, name: "nuevos", alias: "datos", columna: "1" },
+          { id: 1, name: "nuevos", alias: "datos", columna: "1" },
+          { id: 1, name: "nuevos", alias: "datos", columna: "4" }
+        ];
+        table.querySelector("dom-repeat").render();
+        assert.equal(table.rows.length, 4);
       });
 
-      test('Listen render elements when change length', () => {
+      /*test('Listen render elements when change length', () => {
         const element = fixture('CountElements');
         element.headers = ["text 1", "text 2", "text3"];
         element.columns = [
@@ -46,7 +55,16 @@
         const whenLargeBlock = element.querySelector("#when-large");
         const whenSmallBlock = element.querySelector("#when-small");
         assert.equal(whenLargeBlock);
-      });
+      });*/
+
+      /*test('Spy when execute function', () => {
+        const element = fixture('CountElements');
+        const spy = sinon.spy(element, "funcion");
+        assert.isTrue(spy.called) // if called
+        //assert.isTrue(spy.calledOnce) // if called only once
+        //assert.isTrue(spy.counter === 3) // if count many times has called
+        spy.restore();
+      });*/
 
     });
   </script>
