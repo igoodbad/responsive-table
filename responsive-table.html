@@ -1,10 +1,16 @@
 <link rel="import" href="../polymer/polymer-element.html">
+<link rel="import" href="../paper-input/paper-input.html">
 
 <dom-module id="responsive-table">
   <template>
     <style>
       :host {
         display: block;
+      }
+
+      /* Style container */
+      .container{
+        
       }
 
       .table {
@@ -15,20 +21,41 @@
         margin-right: auto;
         margin-left: auto;
         overflow-x: auto;
-        background-color: pink;
+        border: 0.06em solid #bdbdbd;
       }
 
+      /* Style table */
       table {
         width: 100%;
       }
 
       table td {
         min-width: 100px;
+        padding: 3px 3px;
       }
 
       #head-table th:hover {
         cursor: pointer;
       }
+
+      #body-table tr{
+        cursor: pointer;
+      }
+
+      #body-table tr:hover, #body-table .selected td{
+        background-color: #a6ccff;
+      }
+
+      /* --Types style table */
+      .stripped thead {
+        background-color: #a6ccff;
+        color: #333;
+      }
+      .stripped tbody tr:nth-child(odd) {
+        background-color: #ededed;
+      }
+
+      /* End style table*/
 
       .hide-block {
         display: none;
@@ -38,17 +65,30 @@
         display: block;
       }
 
+      .blockInfo{
+        display: inline-flex;
+        border-left: 0.05em solid;
+        padding: 2px 7px;
+      }
+
+      /* List */
+
       .list-detail {
         list-style-type: none;
-        margin: 10px 0px;
+        margin: 0px 0px;
         padding: 0;
-        border: 0.07em solid black;
+        border: 0.07em solid #bababa;
       }
 
       .list-detail li {
         border-top: 0.07em solid black;
         background-color: #fff;
         padding: 3px 6px;
+        cursor: pointer;
+      }
+
+      .list-detail li:hover{
+        background-color: #a6ccff;
       }
 
       .list-detail li:first-child {
@@ -72,8 +112,10 @@
         }
       }
 
-      details[open] summary {
+      details[open]{
         background-color: #cfeaf2;
+      }
+      details[open] summary {
         border-bottom: 0.07em solid black;
       }
       
@@ -85,7 +127,7 @@
         display: relative;
         width: 80%;
         border: none;
-        border-bottom: 2px solid;
+        border-bottom: 2px solid #bababa;
         margin-bottom: 5px;
         margin-top: 5px;
         padding: 5px 10px;
@@ -94,52 +136,143 @@
 
       }
 
+      /* Footer table */
+      .footer-table-style{
+        display: none;
+        border: 0.06em solid #bababa;
+        padding: 5px 10px;
+        justify-content: space-around;
+      }
+      .pagination-style > #info-paginator{
+        display:inline-flex;
+        box-sizing: content-box;
+      }
+      #info-paginator > select{
+        border: none;
+      }
+      
+      .pagination-style > #selector-row-show{
+        display: inline-flex;
+        box-sizing: content-box;
+      }
+      #selector-row-show > select{
+        border: none;
+      }
+
+/* Modal element */
+.modalDialog {
+	position: fixed;
+	font-family: Arial, Helvetica, sans-serif;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(0,0,0,0.8);
+	z-index: 99999;
+	opacity:0;
+	-webkit-transition: opacity 400ms ease-in;
+	-moz-transition: opacity 400ms ease-in;
+	transition: opacity 400ms ease-in;
+	pointer-events: none;
+}
+.modalDialog > div {
+	width: 400px;
+	position: relative;
+	margin: 10% auto;
+	padding: 5px 20px 13px 20px;
+	border-radius: 10px;
+	background: #fff;
+	background: -moz-linear-gradient(#fff, #999);
+	background: -webkit-linear-gradient(#fff, #999);
+	background: -o-linear-gradient(#fff, #999);
+}
+.close {
+	background: #606061;
+	color: #FFFFFF;
+	line-height: 25px;
+	position: absolute;
+	right: -12px;
+	text-align: center;
+	top: -10px;
+	width: 24px;
+	text-decoration: none;
+	font-weight: bold;
+	-webkit-border-radius: 12px;
+	-moz-border-radius: 12px;
+	border-radius: 12px;
+	-moz-box-shadow: 1px 1px 3px #000;
+	-webkit-box-shadow: 1px 1px 3px #000;
+	box-shadow: 1px 1px 3px #000;
+}
+.close:hover { background: #00d9ff; }
     </style>
-    <div id="search-input" hidden$="[[!search]]">
-      <input type="text" value="" placeholder$="[[searchPlaceholder]]" on-keyup="_changeSearch" />
-    </div>
-    <div id="containerTable" class="table">
-      <div id="when-large">
-        <table>
-          <thead>
-            <tr id="head-table">
-              <template is="dom-repeat" items="[[headers]]" as="titleHead">
-                <th id="th_[[index]]_asc">[[titleHead]]</th>
-              </template>
-            </tr>
-          </thead>
-          <tbody id="body-table">
-            <template is="dom-repeat" items="[[columnValues]]" as="columValue" filter="{{_filterData(valueSearch)}}">
-              <tr>
-                <template is="dom-repeat" items="[[columValue.data]]" as="cellValue">
-                  <td>[[cellValue.1]]</td>
+    <div class="container">
+      <div id="search-input" hidden$="[[!search]]">
+        <input type="text" value="" placeholder$="[[searchPlaceholder]]" on-keyup="_changeSearch" />
+      </div>
+      <div id="containerTable" class="table">
+        <div id="when-large">
+          <table class$="[[styleTable]]">
+            <thead>
+              <tr id="head-table">
+                <template is="dom-repeat" items="[[headers]]" as="titleHead">
+                  <th id="th_[[index]]_asc">[[titleHead]]</th>
                 </template>
               </tr>
+            </thead>
+            <tbody id="body-table">
+              <template is="dom-repeat" items="[[columnValues]]" as="columValue" filter="{{_filterData(valueSearch)}}">
+                <tr id="tr_[[columValue.rowIndex]]">
+                  <template is="dom-repeat" items="[[columValue.data]]" as="cellValue">
+                    <td>[[cellValue.1]]</td>
+                  </template>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+        <div id="when-small">
+          <ul class="list-detail">
+            <template is="dom-repeat" items="[[columnValues]]" as="columValue" filter="{{_filterData(valueSearch)}}">
+              <li>
+                <details>
+                  <summary>[[headers.0]]: [[columValue.data.0.1]]</summary>
+                  <template is="dom-repeat" items="[[columValue.data]]" as="cellValue">
+                    <div class="blockInfo">[[_getHeader(index)]]: [[cellValue.1]]</div>
+                  </template>
+                </details>
+              </li>
             </template>
-          </tbody>
-        </table>
+          </ul>
+        </div>
+        <div id="footer-nav" class="footer-table-style">
+          <div class="ediTable" hidden$="[[!editTable]]">
+            <button type="button" on-click="_openModal">[[textEditBtn]]</button>
+          </div>
+          <div id="info-paginator" hidden$="[[!pagination]]">
+            [[textPaginator]]: <select></select>
+          </div>
+          <div id="selector-row-show" hidden$="[[!pagination]]">
+            [[textRowsSelector]]:
+            <select on-change="_reListLimit">
+              <template is="dom-repeat" items="[[rowsOption]]">
+                <option value="[[item]]">[[item]]</option>
+              </template>
+            </select>
+          </div>
+        </div>
       </div>
-      <div id="when-small">
-        <ul class="list-detail">
-          <li>
-            <details>
-              <summary>a</summary>
-              <p>This the letter a</p>
-            </details>
-          </li>
-          <li>
-            <details>
-              <summary>b</summary>
-              <p>This the letter b</p>
-            </details>
-          </li>
-          <li>
-            <details>
-              <summary>c</summary>
-              <p>This the letter c</p>
-            </details>
-          </li>
-        </ul>
+      <div id="modalDialogPreview" class="modalDialog">
+        <div>
+          <paper-input label="username">
+            <iron-icon icon="mail" slot="prefix"></iron-icon>
+            <div slot="suffix">@email.com</div>
+          </paper-input>
+          <div class="footer-modal">
+            <button type="button" class="btn-cancel" on-click="_closeModal">[[textCancelBtn]]</button>
+            <button type="button" class="btn-cancel" on-click="_closeModal">[[textSaveBtn]]</button>
+          </div>
+        </div>
       </div>
     </div>
   </template>
@@ -157,6 +290,7 @@
       static get is() { return 'responsive-table'; }
       static get properties() {
         return {
+          /* Properties send by user */
           headers: {
             type: Array,
             value: () => []
@@ -164,10 +298,6 @@
           columns: {
             type: Array,
             value: () => []
-          },
-          columnValues: {
-            type: Array,
-            computed: "_convertColumn(columns)"
           },
           search: {
             type: Boolean,
@@ -177,44 +307,146 @@
             type: String,
             value: ""
           },
+          styleTable: {
+            type: String,
+            value: "stripped"
+          },
+          textPaginator: {
+            text: String,
+            value: "Página"
+          },
+          textRowsSelector: {
+            text: String,
+            value: "Filas por página"
+          },
+          rowsOption: {
+            type: Array,
+            value: () => [10, 20, 30]
+          },
+          editTable: {
+            type: Boolean,
+            value: false
+          },
+          textCancelBtn: {
+            type: String,
+            value: "Cancelar"
+          },
+          textSaveBtn: {
+            type: String,
+            value: "Guardar"
+          },
+          textEditBtn: {
+            type: String,
+            value: "Editar"
+          },
+          pagination: {
+            type: Boolean,
+            value: false
+          },
+
+          /* Internal properties */
+          columnValues: {
+            type: Array,
+            computed: "_convertColumn(columns)"
+          },
           valueSearch: {
             type: String,
             value: ''
+          },
+          rowSelectedElement: {
+            type: Object,
+            value: () => { }
+          },
+          modalElement: {
+            type: Object,
+            value: () => { }
+          },
+          bodyTableElement: {
+            type: Object,
+            value: () => { }
+          },
+
+          /* Soon properties */
+          numberPage: {
+            type: Number,
+            value: 1
+          },
+          starNode: {
+            type: Number,
+            value: 0
           }
         };
       }
+
       ready() {
         super.ready();
         const component = this.$.containerTable;
-        const largeComponent = component.querySelector("#when-large");
-        const smallComponent = component.querySelector("#when-small");
-        if (component.offsetWidth < 601) {
-          largeComponent.hidden = true;
-          smallComponent.hidden = false;
-        } else {
-          largeComponent.hidden = false;
-          smallComponent.hidden = true;
-        }
+        const largeElement = component.querySelector("#when-large");
+        const smallElement = component.querySelector("#when-small");
+        this._setVisibleElement(component, largeElement, smallElement);
         window.addEventListener("resize", function () {
           if (component.offsetWidth < 601) {
-            largeComponent.hidden = true;
-            smallComponent.hidden = false;
+            largeElement.hidden = true;
+            smallElement.hidden = false;
           } else {
-            largeComponent.hidden = false;
-            smallComponent.hidden = true;
+            largeElement.hidden = false;
+            smallElement.hidden = true;
           }
         });
         const headerOrder = component.querySelector("#head-table");
         headerOrder.addEventListener("click", (event) => {
           this._reOrderBy(event);
         });
+        this.bodyTableElement = component.querySelector("#body-table");
+        this.bodyTableElement.addEventListener("click", (event) => {
+          this._removeClassSelected();
+          this._prepareRowToEdit(this.bodyTableElement.rows[(event.target.parentElement.rowIndex) - 1]);
+        });
+        this._settingFooter();
+        this.modalElement = this.$.modalDialogPreview;
+
+        /*const selectCountRows = this.$.paginator.querySelector("#selector-row-show").querySelector("select");
+        console.log(selectCountRows)
+        selectCountRows.selectedIndex = 2;
+        console.log(selectCountRows.selectedIndex)*/
+      }
+
+      _setVisibleElement(component, largeElement, smallElement) {
+        if (component.offsetWidth < 601) {
+          largeElement.hidden = true;
+          smallElement.hidden = false;
+        } else {
+          largeElement.hidden = false;
+          smallElement.hidden = true;
+        }
+      }
+
+      _settingFooter() {
+        const footerTable = this.$.containerTable.querySelector("#footer-nav");
+        if (this.editTable || this.pagination) {
+          footerTable.style.display = "flex";
+        }
+
+      }
+
+      _removeClassSelected() {
+        this.set("rowSelectedElement", {});
+        for (const toCleanRow of this.bodyTableElement.rows) {
+          toCleanRow.className = "";
+        }
+      }
+
+      _reListLimit() {
+        console.log("change it")
+        this.starNode;
       }
 
       _convertColumn(arrayValues) {
         let orderValues = [];
-        for (const row of arrayValues) {
+        for (const index in arrayValues) {
           let rowObject = {};
-          let separed = Object.entries(row);
+          let separed = Object.entries(arrayValues[index]);
+          rowObject["rowIndex"] = index;
           rowObject["id"] = separed[0][1];
           separed.splice(0, 1);
           rowObject["data"] = separed;
@@ -223,10 +455,13 @@
         return orderValues;
       }
 
+      _getHeader(index) {
+        return this.headers[index];
+      }
+
       _reOrderBy(event) {
+        this._removeClassSelected();
         const directriz = event.target.id.split("_");
-        //const headerOrder = this.$.containerTable.querySelector("#head-table");
-        //console.log(headerOrder);
         if ((Number(directriz[1]) + 1) <= this.columnValues[0].data.length) {
           const columnOrder = this.columnValues[0].data[directriz[1]][0];
           let newOrder = [];
@@ -269,13 +504,32 @@
         }
         return function (dataColumns) {
           let findMatch = [];
-          for(const value of dataColumns.data){
-            findMatch.push(value[1].toLowerCase().includes(searchString.toLowerCase()));
+          for (const value of dataColumns.data) {
+            findMatch.push(value.toString().toLowerCase().includes(searchString.toLowerCase()));
           }
           return findMatch.some(match => match === true);
         }
       }
 
+      _prepareRowToEdit(rowEvent) {
+        //rowSelectedElement
+        //this.columns
+        //this.columnValues
+        rowEvent.className = "selected";
+        const rowIndex = rowEvent.id.split("_")[1];
+        const row = this.columns[rowIndex];
+        this.set("rowSelectedElement", row);
+        //console.log(rowEvent.cells[0].textContent)
+        console.log(this.rowSelectedElement)
+      }
+
+      _openModal() {
+        this.modalElement.style = "opacity: 1;pointer-events: auto;";
+      }
+
+      _closeModal() {
+        this.modalElement.style = "opacity: 0;";
+      }
     }
 
     window.customElements.define(ResponsiveTable.is, ResponsiveTable);
