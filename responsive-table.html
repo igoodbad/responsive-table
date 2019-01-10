@@ -10,7 +10,7 @@
 
       /* Style container */
       .container{
-        
+
       }
 
       .table {
@@ -118,7 +118,7 @@
       details[open] summary {
         border-bottom: 0.07em solid black;
       }
-      
+
       /* Search element */
       #search-input{
         width: 100%;
@@ -150,7 +150,7 @@
       #info-paginator > select{
         border: none;
       }
-      
+
       .pagination-style > #selector-row-show{
         display: inline-flex;
         box-sizing: content-box;
@@ -267,7 +267,7 @@
           <template is="dom-repeat" items="[[rowSelectedElement]]" as="rowSeltd">
             <form id="form-edit-[[rowSeltd.rowIndex]]">
                 <template is="dom-repeat" items="[[rowSeltd.data]]">
-                  <paper-input label="[[_getHeader(index)]]" value="[[item.1]]"></paper-input>
+                  <paper-input value="[[item.1]]" label="[[item.2]]"></paper-input>
                 </template>
               </form>
           </template>
@@ -523,6 +523,9 @@
         const rowIndex = rowEvent.id.split("_")[1];
         let row = this._convertColumn([this.columns[rowIndex]])[0];
         row.rowIndex = rowIndex;
+        for(const index in this.headers) {
+          row.data[index].push(this.headers[index]);
+        }
         this.set("rowSelectedElement", [{...row}]);
         //console.log(rowEvent.cells[0].textContent)
         console.log(this.rowSelectedElement)
