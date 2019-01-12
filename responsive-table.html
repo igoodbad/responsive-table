@@ -153,63 +153,63 @@
         border: none;
       }
 
-/* Modal element */
-.modalDialog {
-	position: fixed;
-	font-family: Arial, Helvetica, sans-serif;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background: rgba(0,0,0,0.8);
-	z-index: 99999;
-	opacity:0;
-	-webkit-transition: opacity 400ms ease-in;
-	-moz-transition: opacity 400ms ease-in;
-	transition: opacity 400ms ease-in;
-	pointer-events: none;
-}
-.modalDialog > div {
-	min-width: 200px;
-  max-width: 450px;
-	position: relative;
-	margin: 10% auto;
-	padding: 5px 20px 13px 20px;
-	border-radius: 10px;
-	background: #fff;
-	background: -moz-linear-gradient(#fff, #999);
-	background: -webkit-linear-gradient(#fff, #999);
-	background: -o-linear-gradient(#fff, #999);
-}
-.close {
-	background: #606061;
-	color: #FFFFFF;
-	line-height: 25px;
-	position: absolute;
-	right: -12px;
-	text-align: center;
-	top: -10px;
-	width: 24px;
-	text-decoration: none;
-	font-weight: bold;
-	-webkit-border-radius: 12px;
-	-moz-border-radius: 12px;
-	border-radius: 12px;
-	-moz-box-shadow: 1px 1px 3px #000;
-	-webkit-box-shadow: 1px 1px 3px #000;
-	box-shadow: 1px 1px 3px #000;
-}
-.close:hover { background: #00d9ff; }
+      /* Modal element */
+      .modalDialog {
+        position: fixed;
+        font-family: Arial, Helvetica, sans-serif;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: rgba(0,0,0,0.8);
+        z-index: 99999;
+        opacity:0;
+        -webkit-transition: opacity 400ms ease-in;
+        -moz-transition: opacity 400ms ease-in;
+        transition: opacity 400ms ease-in;
+        pointer-events: none;
+      }
+      .modalDialog > div {
+        min-width: 200px;
+        max-width: 450px;
+        position: relative;
+        margin: 10% auto;
+        padding: 5px 20px 13px 20px;
+        border-radius: 10px;
+        background: #fff;
+        background: -moz-linear-gradient(#fff, #999);
+        background: -webkit-linear-gradient(#fff, #999);
+        background: -o-linear-gradient(#fff, #999);
+      }
+      .close {
+        background: #606061;
+        color: #FFFFFF;
+        line-height: 25px;
+        position: absolute;
+        right: -12px;
+        text-align: center;
+        top: -10px;
+        width: 24px;
+        text-decoration: none;
+        font-weight: bold;
+        -webkit-border-radius: 12px;
+        -moz-border-radius: 12px;
+        border-radius: 12px;
+        -moz-box-shadow: 1px 1px 3px #000;
+        -webkit-box-shadow: 1px 1px 3px #000;
+        box-shadow: 1px 1px 3px #000;
+      }
+      .close:hover { background: #00d9ff; }
 
-/* Button style */
-.btn-edit-modal{
-  background-color:#a6ccff;
-  padding: 8px 30px;
-border: 0.06em groove;
-border-radius: 2rem;
-font-family: verdana;
-font-size: 1rem;
-}
+      /* Button style */
+      .btn-edit-modal{
+        background-color:#a6ccff;
+        padding: 8px 30px;
+      border: 0.06em groove;
+      border-radius: 2rem;
+      font-family: verdana;
+      font-size: 1rem;
+      }
     </style>
     <div class="container">
       <div id="search-input" hidden$="[[!search]]">
@@ -353,10 +353,6 @@ font-size: 1rem;
             type: String,
             value: "Editar"
           },
-          pagination: {
-            type: Boolean,
-            value: false
-          },
           breakResize: {
             type: Number,
             value: 601
@@ -393,6 +389,10 @@ font-size: 1rem;
           },
 
           /* Soon properties */
+          pagination: {
+            type: Boolean,
+            value: false
+          },
           numberPage: {
             type: Number,
             value: 1
@@ -405,7 +405,7 @@ font-size: 1rem;
       }
 
       /**
-      * Function to set principal structure and listeners
+      * Function to set listeners and initialze table and list
       */
       ready() {
         super.ready();
@@ -464,7 +464,7 @@ font-size: 1rem;
       }
 
       /**
-      * Function to clear selected elements when 
+      * Function to clear selected row in table, verify if tbody element into table is available
       */
       _clearStage() {
         if (this.bodyTableElement) {
@@ -473,6 +473,9 @@ font-size: 1rem;
 
       }
 
+      /**
+      * Function to remove class selected in tr
+      */
       _removeClassSelected() {
         this.set("rowSelectedElement", []);
         for (const toCleanRow of this.bodyTableElement.rows) {
@@ -480,6 +483,9 @@ font-size: 1rem;
         }
       }
 
+      /**
+      * Function to close tag <details> when is open into list
+      */
       _removeLiSelected() {
         this.set("rowSelectedElement", []);
         const nodesList = this.listElement.querySelectorAll("li");
@@ -488,11 +494,9 @@ font-size: 1rem;
         }
       }
 
-      _reListLimit() {
-        console.log("change it")
-        this.starNode;
-      }
-
+      /**
+      * Function to prepare original array provide by user, the array provide is used in table and list views
+      */
       _convertColumn(arrayValues) {
         let orderValues = [];
         for (const index in arrayValues) {
@@ -507,10 +511,16 @@ font-size: 1rem;
         return orderValues;
       }
 
+      /**
+      * Funtion to get value from array headers depending of index
+      */
       _getHeader(arrayHeaders, index) {
         return arrayHeaders[index];
       }
 
+      /**
+      * Function to order value elements depending sort indicator
+      */
       _reOrderBy(event) {
         this._removeClassSelected();
         const directriz = event.target.id.split("_");
@@ -545,12 +555,18 @@ font-size: 1rem;
         }
       }
 
+      /**
+      * Function to get value of input search and set value in property search
+      */
       _changeSearch() {
         this._clearStage();
         const word = this.shadowRoot.querySelector("#search-input").querySelector("input");
         this.set("valueSearch", word.value);
       }
 
+      /**
+      * Function to evaluate if the value of column match with search string
+      */
       _filterData(searchString) {
         if (!searchString) {
           return null
@@ -564,6 +580,9 @@ font-size: 1rem;
         }
       }
 
+      /**
+      * Function to prepare listener event, set the value in property selected row. This function apply in table
+      */
       _prepareRowToEdit(rowEvent) {
         rowEvent.className = "selected";
         const rowIndex = rowEvent.id.split("_")[1];
@@ -576,6 +595,9 @@ font-size: 1rem;
         this.set("rowSelectedElement", [{ ...row }]);
       }
 
+      /**
+      * Function to prepare listener event, set the value in property selected row. This function apply in list
+      */
       _prepareListElementSelected(event) {
         this._removeLiSelected();
         if (event.target.localName === "summary") {
@@ -591,6 +613,9 @@ font-size: 1rem;
 
       }
 
+      /**
+      * Function to open modal, evaluate if user select row element
+      */
       _openModal() {
         if (this.rowSelectedElement.length > 0) {
           this.modalElement.style = "opacity: 1;pointer-events: auto;";
@@ -601,10 +626,16 @@ font-size: 1rem;
         }
       }
 
+      /**
+      * Function to close model
+      */
       _closeModal() {
         this.modalElement.style = "opacity: 0;";
       }
 
+      /**
+      * Function to prepare custom event with value row modified
+      */
       _saveData() {
         const editInputs = this.modalElement.querySelector("form").querySelectorAll("paper-input");
         const selectedRow = this.rowSelectedElement[0].data;
@@ -616,6 +647,12 @@ font-size: 1rem;
           detail: newObject
         }));
         this._closeModal();
+      }
+
+      /** Soon functions */
+      _reListLimit() {
+        //console.log("change it")
+        this.starNode;
       }
     }
 
