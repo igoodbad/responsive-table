@@ -9,10 +9,6 @@
       }
 
       /* Style container */
-      .container{
-        
-      }
-
       .table {
         display: block;
         position: relative;
@@ -48,11 +44,11 @@
 
       /* --Types style table */
       .stripped thead {
-        background-color: #a6ccff;
-        color: #333;
+        background-color:var(--stripped-table-header-background-color, #a6ccff);
+        color:var(--stripped-table-header-color,#333);
       }
       .stripped tbody tr:nth-child(odd) {
-        background-color: #ededed;
+        background-color: var(--stripped-table-body-background-color,#ededed);
       }
 
       /* End style table*/
@@ -72,7 +68,6 @@
       }
 
       /* List */
-
       .list-detail {
         list-style-type: none;
         margin: 0px 0px;
@@ -133,7 +128,6 @@
         padding: 5px 10px;
         font-size: 1rem;
         font-family: verdana;
-
       }
 
       /* Footer table */
@@ -176,7 +170,8 @@
 	pointer-events: none;
 }
 .modalDialog > div {
-	width: 400px;
+	min-width: 200px;
+  max-width: 450px;
 	position: relative;
 	margin: 10% auto;
 	padding: 5px 20px 13px 20px;
@@ -205,6 +200,16 @@
 	box-shadow: 1px 1px 3px #000;
 }
 .close:hover { background: #00d9ff; }
+
+/* Button style */
+.btn-edit-modal{
+  background-color:#a6ccff;
+  padding: 8px 30px;
+border: 0.06em groove;
+border-radius: 2rem;
+font-family: verdana;
+font-size: 1rem;
+}
     </style>
     <div class="container">
       <div id="search-input" hidden$="[[!search]]">
@@ -234,11 +239,11 @@
         <div id="when-small">
           <ul class="list-detail">
             <template is="dom-repeat" items="[[columnValues]]" as="columValue" filter="{{_filterData(valueSearch)}}">
-              <li>
+              <li id="li_[[columValue.rowIndex]]">
                 <details>
                   <summary>[[headers.0]]: [[columValue.data.0.1]]</summary>
                   <template is="dom-repeat" items="[[columValue.data]]" as="cellValue">
-                    <div class="blockInfo">[[_getHeader(index)]]: [[cellValue.1]]</div>
+                    <div class="blockInfo">[[_getHeader(headers, index)]]: [[cellValue.1]]</div>
                   </template>
                 </details>
               </li>
@@ -247,7 +252,7 @@
         </div>
         <div id="footer-nav" class="footer-table-style">
           <div class="ediTable" hidden$="[[!editTable]]">
-            <button type="button" on-click="_openModal">[[textEditBtn]]</button>
+            <button type="button" class="btn-edit-modal" on-click="_openModal">[[textEditBtn]]</button>
           </div>
           <div id="info-paginator" hidden$="[[!pagination]]">
             [[textPaginator]]: <select></select>
@@ -266,15 +271,14 @@
         <div>
           <template is="dom-repeat" items="[[rowSelectedElement]]" as="rowSeltd">
             <form id="form-edit-[[rowSeltd.rowIndex]]">
-                <template is="dom-repeat" items="[[rowSeltd.data]]">
-                  <paper-input label="[[_getHeader(index)]]" value="[[item.1]]"></paper-input>
-                </template>
-              </form>
+              <template is="dom-repeat" items="[[rowSeltd.data]]">
+                <paper-input label="[[_getHeader(headers, index)]]" value="[[item.1]]"></paper-input>
+              </template>
+            </form>
           </template>
-
           <div class="footer-modal">
             <button type="button" class="btn-cancel" on-click="_closeModal">[[textCancelBtn]]</button>
-            <button type="button" class="btn-cancel" on-click="_closeModal">[[textSaveBtn]]</button>
+            <button type="button" class="btn-cancel" on-click="_saveData">[[textSaveBtn]]</button>
           </div>
         </div>
       </div>
@@ -301,7 +305,8 @@
           },
           columns: {
             type: Array,
-            value: () => []
+            value: () => [],
+            observer: "_clearStage"
           },
           search: {
             type: Boolean,
@@ -309,19 +314,23 @@
           },
           searchPlaceholder: {
             type: String,
-            value: ""
+            value: "Ingresa la palabra a buscar"
           },
           styleTable: {
             type: String,
             value: "stripped"
           },
           textPaginator: {
-            text: String,
+            type: String,
             value: "Página"
           },
           textRowsSelector: {
-            text: String,
+            type: String,
             value: "Filas por página"
+          },
+          textNoSelectedRow: {
+            type: String,
+            value: "Debe seleccionar una fila para poder editarla"
           },
           rowsOption: {
             type: Array,
@@ -329,7 +338,8 @@
           },
           editTable: {
             type: Boolean,
-            value: false
+            value: false,
+            observer: "_settingFooter"
           },
           textCancelBtn: {
             type: String,
@@ -346,6 +356,10 @@
           pagination: {
             type: Boolean,
             value: false
+          },
+          breakResize: {
+            type: Number,
+            value: 601
           },
 
           /* Internal properties */
@@ -365,7 +379,15 @@
             type: Object,
             value: () => { }
           },
+          headerTableElement: {
+            type: Object,
+            value: () => { }
+          },
           bodyTableElement: {
+            type: Object,
+            value: () => { }
+          },
+          listElement: {
             type: Object,
             value: () => { }
           },
@@ -382,14 +404,19 @@
         };
       }
 
+      /**
+      * Function to set principal structure and listeners
+      */
       ready() {
         super.ready();
+        const breakR = this.breakResize;
         const component = this.$.containerTable;
         const largeElement = component.querySelector("#when-large");
         const smallElement = component.querySelector("#when-small");
-        this._setVisibleElement(component, largeElement, smallElement);
+        this.listElement = smallElement.querySelector("ul");
+        this._setVisibleElement(component, largeElement, smallElement, breakR);
         window.addEventListener("resize", function () {
-          if (component.offsetWidth < 601) {
+          if (component.offsetWidth < breakR) {
             largeElement.hidden = true;
             smallElement.hidden = false;
           } else {
@@ -397,8 +424,8 @@
             smallElement.hidden = true;
           }
         });
-        const headerOrder = component.querySelector("#head-table");
-        headerOrder.addEventListener("click", (event) => {
+        this.headerTableElement = component.querySelector("#head-table");
+        this.headerTableElement.addEventListener("click", (event) => {
           this._reOrderBy(event);
         });
         this.bodyTableElement = component.querySelector("#body-table");
@@ -406,17 +433,18 @@
           this._removeClassSelected();
           this._prepareRowToEdit(this.bodyTableElement.rows[(event.target.parentElement.rowIndex) - 1]);
         });
+        this.listElement.addEventListener("click", (event) => {
+          this._prepareListElementSelected(event);
+        })
         this._settingFooter();
         this.modalElement = this.$.modalDialogPreview;
-
-        /*const selectCountRows = this.$.paginator.querySelector("#selector-row-show").querySelector("select");
-        console.log(selectCountRows)
-        selectCountRows.selectedIndex = 2;
-        console.log(selectCountRows.selectedIndex)*/
       }
 
-      _setVisibleElement(component, largeElement, smallElement) {
-        if (component.offsetWidth < 601) {
+/**
+* Function to set visible element depending size component(screen)
+*/
+      _setVisibleElement(component, largeElement, smallElement, breakR) {
+        if (component.offsetWidth < breakR) {
           largeElement.hidden = true;
           smallElement.hidden = false;
         } else {
@@ -425,10 +453,22 @@
         }
       }
 
+/**
+* Function to set visible footer when any attribute is required
+*/
       _settingFooter() {
         const footerTable = this.$.containerTable.querySelector("#footer-nav");
         if (this.editTable || this.pagination) {
           footerTable.style.display = "flex";
+        }
+      }
+
+/**
+* Function to clear selected elements when 
+*/
+      _clearStage() {
+        if (this.bodyTableElement) {
+          this._removeClassSelected();
         }
 
       }
@@ -437,6 +477,14 @@
         this.set("rowSelectedElement", []);
         for (const toCleanRow of this.bodyTableElement.rows) {
           toCleanRow.className = "";
+        }
+      }
+
+      _removeLiSelected() {
+        this.set("rowSelectedElement", []);
+        const nodesList = this.listElement.querySelectorAll("li");
+        for (const toCleanRow of nodesList) {
+          toCleanRow.querySelector("details").open = false;
         }
       }
 
@@ -459,8 +507,8 @@
         return orderValues;
       }
 
-      _getHeader(index) {
-        return this.headers[index];
+      _getHeader(arrayHeaders, index) {
+        return arrayHeaders[index];
       }
 
       _reOrderBy(event) {
@@ -498,6 +546,7 @@
       }
 
       _changeSearch() {
+        this._clearStage();
         const word = this.shadowRoot.querySelector("#search-input").querySelector("input");
         this.set("valueSearch", word.value);
       }
@@ -516,24 +565,52 @@
       }
 
       _prepareRowToEdit(rowEvent) {
-        //rowSelectedElement
-        //this.columns
-        //this.columnValues
         rowEvent.className = "selected";
         const rowIndex = rowEvent.id.split("_")[1];
+        this.dispatchEvent(new CustomEvent("info-row", {
+          detail: this.columns[rowIndex]
+        }))
         let row = this._convertColumn([this.columns[rowIndex]])[0];
         row.rowIndex = rowIndex;
-        this.set("rowSelectedElement", [{...row}]);
-        //console.log(rowEvent.cells[0].textContent)
-        console.log(this.rowSelectedElement)
+        row.headers = this.headers;
+        this.set("rowSelectedElement", [{ ...row }]);
+      }
+
+      _prepareListElementSelected(event) {
+        this._removeLiSelected();
+        if (event.target.localName === "summary") {
+          let rowId = Number(event.target.parentElement.parentElement.id.split("_")[1]);
+          this.dispatchEvent(new CustomEvent("info-row", {
+            detail: this.columns[rowId]
+          }));
+          let row = this._convertColumn([this.columns[rowId]])[0];
+          row.rowIndex = rowId;
+          row.headers = this.headers;
+          this.set("rowSelectedElement", [{ ...row }]);
+        }
+
       }
 
       _openModal() {
-        this.modalElement.style = "opacity: 1;pointer-events: auto;";
+        if (this.rowSelectedElement.length > 0) {
+          this.modalElement.style = "opacity: 1;pointer-events: auto;";
+        } else {
+          this.dispatchEvent(new CustomEvent("info-row", {
+            detail: this.textNoSelectedRow
+          }))
+        }
       }
 
       _closeModal() {
         this.modalElement.style = "opacity: 0;";
+      }
+
+      _saveData(){
+        const editInputs = this.modalElement.querySelector("form").querySelectorAll("paper-input");
+        let newObject = this.columns[Number(this.rowSelectedElement[0].rowIndex)];
+        for(const index in editInputs){
+          newObject
+        }
       }
     }
 

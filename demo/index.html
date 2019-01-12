@@ -12,98 +12,110 @@
   <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
   <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
   <link rel="import" href="../responsive-table.html">
-
-  <style>
-    .container {
-      display: block;
-    }
-
-    .size150 {
-      width: 150px;
-    }
-
-    .size576 {
-      width: 576px;
-    }
-
-    .size768 {
-      width: 768px;
-    }
-
-    .size992 {
-      width: 992px;
-    }
-
-    .size1200 {
-      width: 1200px;
-    }
-  </style>
+  <custom-style>
+    <style is="custom-style">
+      .table{
+        --stripped-table-header-background-color:#38affb;
+        --stripped-table-header-color:#fff;
+        --stripped-table-body-background-color:#ffb6fe;
+      }
+      .blockInfo{
+        border: 0.1em solid black;
+        padding: 10px 5px;
+      }
+    </style>
+  </custom-style>
 </head>
 
 <body>
-  <div class="container">
-    <div>
-      <h3>Live size</h3>
-      <responsive-table edit-table="true"></responsive-table>
-      <button type="button" onclick="values2()">Colores</button>
-      <button type="button" onclick="values3()">Otros datos</button>
-      <button type="button" onclick="addSearch()">Agregar Buscador</button>
-    </div>
+  <div class="vertical-section-container centered">
+    <h3>Basic responsive-table demo</h3>
+    <demo-snippet>
+      <template>
+        <responsive-table class="table" search="true" search-placeholder="Filter"></responsive-table>
+        <label>Detail row selected</label>
+        <p id="whenSelectedRow" class="blockInfo"></p>
+        <label>Detail row edited</label>
+        <p id="whenEditRow" class="blockInfo"></p>
+        <button type="button" onclick="values()">Cartoon characters</button>
+        <button type="button" onclick="values2()">Colors</button>
+        <button type="button" onclick="values3()">Other data</button>
+        <button type="button" onclick="addSearch()">Add search</button>
+        <button type="button" onclick="addEdit()">Add edit</button>
+        <script>
+          const headers1 = ["First name", "Last name", "Age", "Phone number", "Job"];
+          const headers2 = ["Color name", "Hexadecimal", "After"];
+          const headers3 = ["Name", "Alias", "Columna"];
+          const columns1 = [
+            { id: 1, first_name: "Star", last_name: "Butterfly", age: 14, phone_number: "92948222342", job: "Princess Mewni" },
+            { id: 2, first_name: "Marco", last_name: "Díaz", age: 15, phone_number: "(12)12769182", job: "Squire" },
+            { id: 3, first_name: "Finn", last_name: "Murtance", age: 16, phone_number: "28934927", job: "Adventure" },
+            { id: 4, first_name: "Jake", last_name: "The Dog", age: 35, phone_number: "019309102", job: "Adventure" },
+            { id: 5, first_name: "Simon", last_name: "Petrikov", age: 40, phone_number: "-", job: "Frozen King" },
+            { id: 6, first_name: "Homero", last_name: "Simpson", age: 50, phone_number: "67238428", job: "Security manager" },
+            { id: 7, first_name: "Marceline", last_name: "Abadeer", age: 999, phone_number: "9991238919", job: "Queen" },
+            { id: 8, first_name: "Rose", last_name: "Quarts", age: 6000, phone_number: "-", job: "Planet defender" },
+            { id: 9, first_name: "Gregory", last_name: "Universe", age: 40, phone_number: "-", job: "Singer" },
+            { id: 10, first_name: "Steven", last_name: "Universe", age: 14, phone_number: "239782642", job: "Crystal gems leader" },
+            { id: 11, first_name: "Connie", last_name: "Maheswaran", age: 12, phone_number: "828934728", job: "Swordswoman" },
+            { id: 12, first_name: "Dipper", last_name: "Pines", age: 13, phone_number: "1414323353", job: "Explorer" },
+            { id: 13, first_name: "Mabel", last_name: "Pines", age: 13, phone_number: "827864223", job: "Explorer/Artist" },
+            { id: 14, first_name: "Stanford", last_name: "Pines", age: 45, phone_number: "-", job: "Inventor/Investigator" },
+            { id: 15, first_name: "Stanley", last_name: "Pines", age: 45, phone_number: "32433456", job: "Swindler" }
+          ];
+          const columns2 = [
+            { id: "1", color: "red", value: "#f00", after: "gren" },
+            { id: "2", color: "green", value: "#0f0", after: "blue" },
+            { id: "3", color: "blue", value: "#00f", after: "yellow" },
+            { id: "4", color: "cyan", value: "#0ff", after: "black" },
+            { id: "5", color: "magenta", value: "#f0f", after: "grey" },
+            { id: "6", color: "yellow", value: "#ff0", after: "cyan" },
+            { id: "7", color: "black", value: "#000", after: "purple" }
+          ];
+          const columns3 = [
+            { id: 1, name: "otros nuevos", alias: "datos", columna: "1" },
+            { id: 1, name: "otros nuevos", alias: "datos", columna: "2" },
+            { id: 1, name: "otros nuevos", alias: "datos", columna: "3" },
+            { id: 1, name: "otros nuevos", alias: "datos", columna: "4" }
+          ];
+
+          const responsiveTable = document.querySelector("responsive-table");
+          const showSelectedInfo = document.querySelector("#whenSelectedRow");
+          const showEditedInfo = document.querySelector("#whenEditRow");
+          responsiveTable.headers = headers1;
+          responsiveTable.columns = columns1;
+          responsiveTable.addEventListener("info-row", event => {
+            showSelectedInfo.innerHTML = JSON.stringify(event.detail);
+          });
+
+          function values() {
+            responsiveTable.headers = headers1;
+            responsiveTable.columns = columns1;
+          }
+
+          function values2() {
+            responsiveTable.headers = headers2;
+            responsiveTable.columns = columns2;
+          }
+
+          function values3() {
+            responsiveTable.headers = headers3;
+            responsiveTable.columns = columns3;
+          }
+
+          function addSearch() {
+            responsiveTable.search = true;
+            responsiveTable.searchPlaceholder = "Ingresa la palabra a buscar";
+          }
+
+          function addEdit() {
+            responsiveTable.editTable = true;
+          }
+
+        </script>
+      </template>
+    </demo-snippet>
   </div>
-  <script>
-    const array1 = ["First name", "Last name", "Age", "Phone number", "Job"];
-    const array2 = ["Color name", "Hexadecimal", "After"];
-    const array3 = ["Name", "Alias", "Columna"];
-
-    const responsiveTable = document.querySelector("responsive-table");
-    responsiveTable.headers = array1;
-    responsiveTable.columns = [
-      { id: 1, first_name: "Star", last_name: "Butterfly", age: 14, phone_number:"92948222342", job: "Princess Mewni" },
-      { id: 2, first_name: "Marco", last_name: "Díaz", age: 15, phone_number:"(12)12769182", job: "Squire" },
-      { id: 3, first_name: "Finn", last_name: "Murtance", age: 16, phone_number:"28934927", job: "Adventure" },
-      { id: 4, first_name: "Jake", last_name: "The Dog", age: 35, phone_number:"019309102", job: "Adventure" },
-      { id: 5, first_name: "Simon", last_name: "Petrikov", age: 40, phone_number:"-", job: "Frozen King" },
-      { id: 6, first_name: "Homero", last_name: "Simpson", age: 50, phone_number:"67238428", job: "Security manager" },
-      { id: 7, first_name: "Marceline", last_name: "Abadeer", age: 999, phone_number:"9991238919", job: "Queen" },
-      { id: 8, first_name: "Rose", last_name: "Quarts", age: 6000, phone_number:"-", job: "Planet defender" },
-      { id: 9, first_name: "Gregory", last_name: "Universe", age: 40, phone_number:"-", job: "Singer" },
-      { id: 10, first_name: "Steven", last_name: "Universe", age: 14, phone_number:"239782642", job: "Crystal gems leader" },
-      { id: 11, first_name: "Connie", last_name: "Maheswaran", age: 12, phone_number:"828934728", job: "Swordswoman" },
-      { id: 12, first_name: "Dipper", last_name: "Pines", age: 13, phone_number:"1414323353", job: "Explorer" },
-      { id: 13, first_name: "Mabel", last_name: "Pines", age: 13, phone_number:"827864223", job: "Explorer/Artist" },
-      { id: 14, first_name: "Stanford", last_name: "Pines", age: 45, phone_number:"-", job: "Inventor/Investigator" },
-      { id: 15, first_name: "Stanley", last_name: "Pines", age: 45, phone_number:"32433456", job: "Swindler" }
-    ];
-
-    function values2() {
-      responsiveTable.headers = array2;
-      responsiveTable.columns = [
-        { id: "1", color: "red", value: "#f00", after: "gren"},
-        { id: "2", color: "green", value: "#0f0", after: "blue"},
-        { id: "3", color: "blue", value: "#00f", after: "yellow"},
-        { id: "4", color: "cyan", value: "#0ff", after: "black"},
-        { id: "5", color: "magenta", value: "#f0f", after: "grey"},
-        { id: "6", color: "yellow", value: "#ff0", after: "cyan"},
-        { id: "7", color: "black", value: "#000", after: "purple"}
-      ];
-    }
-
-    function values3() {
-      responsiveTable.headers = array3;
-      responsiveTable.columns = [
-        { id: 1, name: "otros nuevos", alias: "datos", columna: "1" },
-        { id: 1, name: "otros nuevos", alias: "datos", columna: "2" },
-        { id: 1, name: "otros nuevos", alias: "datos", columna: "3" },
-        { id: 1, name: "otros nuevos", alias: "datos", columna: "4" }
-      ];
-    }
-
-    function addSearch(){
-      responsiveTable.search = true;
-      responsiveTable.searchPlaceholder = "Ingresa la palabra a buscar";
-    }
-
-  </script>
 </body>
 
 </html>
