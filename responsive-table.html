@@ -440,9 +440,9 @@ font-size: 1rem;
         this.modalElement = this.$.modalDialogPreview;
       }
 
-/**
-* Function to set visible element depending size component(screen)
-*/
+      /**
+      * Function to set visible element depending size component(screen)
+      */
       _setVisibleElement(component, largeElement, smallElement, breakR) {
         if (component.offsetWidth < breakR) {
           largeElement.hidden = true;
@@ -453,9 +453,9 @@ font-size: 1rem;
         }
       }
 
-/**
-* Function to set visible footer when any attribute is required
-*/
+      /**
+      * Function to set visible footer when any attribute is required
+      */
       _settingFooter() {
         const footerTable = this.$.containerTable.querySelector("#footer-nav");
         if (this.editTable || this.pagination) {
@@ -463,9 +463,9 @@ font-size: 1rem;
         }
       }
 
-/**
-* Function to clear selected elements when 
-*/
+      /**
+      * Function to clear selected elements when 
+      */
       _clearStage() {
         if (this.bodyTableElement) {
           this._removeClassSelected();
@@ -605,12 +605,17 @@ font-size: 1rem;
         this.modalElement.style = "opacity: 0;";
       }
 
-      _saveData(){
+      _saveData() {
         const editInputs = this.modalElement.querySelector("form").querySelectorAll("paper-input");
+        const selectedRow = this.rowSelectedElement[0].data;
         let newObject = this.columns[Number(this.rowSelectedElement[0].rowIndex)];
-        for(const index in editInputs){
-          newObject
+        for (const index in selectedRow) {
+          newObject[selectedRow[index][0]] = editInputs[index].value;
         }
+        this.dispatchEvent(new CustomEvent("edited-row", {
+          detail: newObject
+        }));
+        this._closeModal();
       }
     }
 

@@ -22,6 +22,10 @@
       .blockInfo{
         border: 0.1em solid black;
         padding: 10px 5px;
+        word-break: break-all;
+      }
+      .block{
+        margin: 10px auto;
       }
     </style>
   </custom-style>
@@ -32,16 +36,22 @@
     <h3>Basic responsive-table demo</h3>
     <demo-snippet>
       <template>
-        <responsive-table class="table" search="true" search-placeholder="Filter"></responsive-table>
-        <label>Detail row selected</label>
-        <p id="whenSelectedRow" class="blockInfo"></p>
-        <label>Detail row edited</label>
-        <p id="whenEditRow" class="blockInfo"></p>
-        <button type="button" onclick="values()">Cartoon characters</button>
-        <button type="button" onclick="values2()">Colors</button>
-        <button type="button" onclick="values3()">Other data</button>
-        <button type="button" onclick="addSearch()">Add search</button>
-        <button type="button" onclick="addEdit()">Add edit</button>
+        <div class="block">
+          <label>Data</label>
+          <button type="button" onclick="values()">Cartoon characters</button>
+          <button type="button" onclick="values2()">Colors</button>
+          <button type="button" onclick="values3()">Other data</button>
+          <br /><label>Actions</label>
+          <button type="button" onclick="addSearch()">Add search</button>
+          <button type="button" onclick="addEdit()">Add edit</button>
+        </div>
+        <responsive-table class="table"></responsive-table>
+        <div class="block">
+          <label>Detail row selected</label>
+          <p id="whenSelectedRow" class="blockInfo"></p>
+          <label>Detail row edited</label>
+          <p id="whenEditRow" class="blockInfo"></p>
+        </div>
         <script>
           const headers1 = ["First name", "Last name", "Age", "Phone number", "Job"];
           const headers2 = ["Color name", "Hexadecimal", "After"];
@@ -86,6 +96,9 @@
           responsiveTable.columns = columns1;
           responsiveTable.addEventListener("info-row", event => {
             showSelectedInfo.innerHTML = JSON.stringify(event.detail);
+          });
+          responsiveTable.addEventListener("edited-row", event => {
+            showEditedInfo.innerHTML = JSON.stringify(event.detail);
           });
 
           function values() {
