@@ -1,6 +1,6 @@
 # \<responsive-table\>
 
-Table full responsive with any devices
+Table full responsive in any devices
 
 ## Install the Polymer-CLI
 
