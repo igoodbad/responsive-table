@@ -1,6 +1,6 @@
 {
-  "name": "responsive-table",
-  "version": "3.5.3",
+  "name": "@igoodbad/responsive-table",
+  "version": "3.1.1",
   "description": "Table full responsive in any devices",
   "main": "responsive-table.js",
   "directories": {
@@ -22,7 +22,7 @@
     "sortable",
     "edit"
   ],
-  "author": "@igoodbad",
+  "author": "igoodbad",
   "license": "Apache License 2.0 (Apache-2.0)",
   "bugs": {
     "url": "https://github.com/igoodbad/responsive-table/issues"
