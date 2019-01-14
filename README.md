@@ -43,3 +43,38 @@ Event | Type | Description | Return
 edited-row | CustomEvent | Return data of row edited | Object
 info-row | CustomEvent | Return original object of select row in table or list, when user don´t select any row, return a text  | Object / String
 
+## Styling
+Custom property | Description | Type | Default 
+----------------|-------------|------|-------
+--table-background-color | Background color of table | Variable | #fff
+--stripped-table-header-custom | Styling of header table | Mixin | background-color:#a6ccff;color:#333;border-bottom: 0.15em solid #f3f3f3;
+--striped-table-body-custom | Styling of body table | Mixin | background-color: #ededed;
+--lineal-table-header-custom | Styling of header table | Mixin | border-bottom: 0.15em solid #b7b7b7;
+--lineal-table-body-custom | Styling of body table | Mixin | border-bottom: 0.08em solid #b7b7b7;
+--all-lines-table-header-custom | Styling of header table, this style affected all cells | Mixin | border: 0.1em solid black;
+--all-lines-table-body-custom | Styling of body table, this style affected all cells | Mixin | border: 0.1em solid black;
+--table-row-selected | Background color of selected row, also when user mouse over any row | Variable | #a6ccff
+--table-header-sort-indicator-up | Indicator of sort ascending | Variable | " ▲"
+--table-header-sort-indicator-down | Indicator of sort ascending | Variable | " ▼"
+--list-style-custom | Styling base of list | Mixin | list-style-type: none; margin: 0px 0px; padding: 0; border: 0.07em solid #bababa;
+--list-li-custom | Styling li element of list | Mixin | border-top: 0.07em solid black; background-color: #fff; padding: 3px 6px; cursor: pointer;
+--list-li-hover-background-color | Background color to highlight element when mouse over | Variable | #a6ccff
+--detail-open-custom | Styling to <details> element when it's opened | Mixin | background-color: #cfeaf2;
+--detail-open-summary-custom | Styling to <summary> element when details it's opened | Mixin | animation: sweep .5s ease-in-out;
+--input-search-custom | Styling of input search | Mixin | display: relative; width: 80%; border: none; border-bottom: 2px solid #bababa; margin-bottom: 5px; margin-top: 5px; padding: 5px 10px; font-size: 1rem; font-family: verdana;
+--modal-background-color | Background color of the modal window | Variable | rgba(62, 62, 62, 0.7);
+--modal-window-custom | Styling of modal window | Mixin | min-width: 200px; max-width: 450px; position: relative; margin: 10% auto; padding: 5px 20px 13px 20px; border-radius: 10px; background: #fff; background: -moz-linear-gradient(rgb(175, 202, 218), rgb(126, 160, 192)); background: -webkit-linear-gradient(rgb(175, 202, 218), rgb(126, 160, 192)); background: -o-linear-gradient(rgb(175, 202, 218), rgb(126, 160, 192));
+--modal-input-custom | Style of the <paper-input> element within the modal | Mixin | - 
+--footer-btn-edit | Styling for edit button, button are visible when editTable is true | Mixin | background-color:#a6ccff; padding: 8px 30px; border: 0.06em groove; border-radius: 2rem; font-family: verdana; font-size: 1rem;
+--modal-btn-cancel | Styling to cancel button into modal | Mixin | border: 0.05em solid #757575; padding: 8px 15px; background-color: #ededed; color: #000; border-radius: 2em; font-family: verdana; font-size: 14px; font-weight: bolder;
+--modal-btn-save | Styling to save button into modal | Mixin | border: 0.05em solid #757575; padding: 8px 15px; background-color: #51c839; color: #232323; border-radius: 2em; font-family: verdana; font-size: 14px; font-weight: bolder;
+
+## Slots
+Id slot | Description
+--------|------------
+slot-over-table | This element is located over the table
+slot-footer-table | This element is located into footer of table
+slot-bottom-table | This element is located in bottom of table
+slot-top-content-modal | This element is located in top of content modal
+slot-bottom-content-modal | This element is located in bottom of content modal
+slot-footer-modal |  This element is located in footer of content modal
