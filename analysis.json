@@ -2,7 +2,7 @@
   "schema_version": "1.0.0",
   "elements": [
     {
-      "description": "# `<responsive-table>`\nFull responsive table in any devices\n\n### Styling\n`<responsive-table>` provides the following custom properties and mixins\nfor styling:\n\nCustom property | Type | Description | Default\n----------------|------|-------------|----------\n`--stripped-table-header-background-color` | Variable | Background color of the header | #a6ccff\n`--stripped-table-header-color` | Variable | Color of the text header | #333\n`--stripped-table-body-background-color` | Variable | Background color of the body table | #ededed",
+      "description": "# \\<responsive-table\\>\nTable full responsive in any devices  \n[![Platform](https://img.shields.io/badge/Polymer-2.x.x-blue.svg)]() [![Build Status](https://travis-ci.org/igoodbad/responsive-table.svg?branch=master)](https://travis-ci.org/igoodbad/responsive-table)\n## Properties\n### Public properties\nName | Type | Description | Default |\n-----|------|-------------|---------|\nbreakResize | Number | Declare minimum value in pixels to change view between table and list, this property only accept number. | 601\ncolumns | Array | Contains the array of value, the values are display into body of table. | Empty\neditTable | Boolean | Boolean value to indicate if the component contains a edit button. | false\nheaders | Array | Contains the array of headers, shows in the first row in the table. | Empty\nsearch | Boolean | Boolean value to indicate if the component contains search input. | false\nsearchPlaceholder | String | Word that show in placeholder of input search. | \"Ingresa la palabra a buscar\"\nstyleTable | String | Selector of table style, by default \"stripped\" style is selected. | \"stripped\"\ntextCancelBtn | String | Word that show in button cancel. | \"Cancelar\"\ntextEditBtn | String |  Word that show in button edit. | \"Editar\"\ntextNoSelectedRow | String | Text displayed when user don't select row and click/tap in edit button. | \"Debe seleccionar una fila para poder editarla\"\ntextSaveBtn | String | Word that show in button save. | \"Guardar\"\n\n### Private properties\nName | Type | Description | Default |\n-----|------|-------------|---------|\n_bodyTableElement | Object | Contain the body node of table. | HTMLElement\n_columnValues | Array | Contains processed data array columns. | Calculated value\n_headerTableElement | Object | Contain the header node of table. | HTMLElement\n_listElement | Object | Contain the list node. | HTMLElement\n_modalElement | Object | Contain the node of div formated at modal. | HTMLElement\n_rowSelectedElement | Array | Contain the full data of row selected, the array only contains a one Object element. | Empty\n_valueSearch | String | Contain the word to filter the rows shown into table and list. | ''\n\n### Coming soon properties\nName | Type | Description | Default\n-----|------|-------------|--------\n_numberPage | Number | Page indicator, modified by preview/next. | 1\n_pagination | Boolean | Boolean value to indicate if the component contains pagination. | false\n_rowsOption | Array | Values to shown in select max rows by page. | [10, 20, 30]\n_textPaginator | String | Text to display in page indicator. | \"Página\"\n_textRowsSelector | String | Text to display in selector of max rows by page. | \"Filas por página\"\n\n## Events\nEvent | Type | Description | Return \n------|------|-------------|-------\nedited-row | CustomEvent | Return data of row edited | Object\ninfo-row | CustomEvent | Return original object of select row in table or list, when user don´t select any row, return a text  | Object / String\n\n## Styling\nCustom property | Description | Type | Default \n----------------|-------------|------|-------\n--table-background-color | Background color of table | Variable | #fff\n--stripped-table-header-custom | Styling of header table | Mixin | background-color:#a6ccff;color:#333;border-bottom: 0.15em solid #f3f3f3;\n--striped-table-body-custom | Styling of body table | Mixin | background-color: #ededed;\n--lineal-table-header-custom | Styling of header table | Mixin | border-bottom: 0.15em solid #b7b7b7;\n--lineal-table-body-custom | Styling of body table | Mixin | border-bottom: 0.08em solid #b7b7b7;\n--all-lines-table-header-custom | Styling of header table, this style affected all cells | Mixin | border: 0.1em solid black;\n--all-lines-table-body-custom | Styling of body table, this style affected all cells | Mixin | border: 0.1em solid black;\n--table-row-selected | Background color of selected row, also when user mouse over any row | Variable | #a6ccff\n--table-header-sort-indicator-up | Indicator of sort ascending | Variable | \" ▲\"\n--table-header-sort-indicator-down | Indicator of sort ascending | Variable | \" ▼\"\n--list-style-custom | Styling base of list | Mixin | list-style-type: none; margin: 0px 0px; padding: 0; border: 0.07em solid #bababa;\n--list-li-custom | Styling li element of list | Mixin | border-top: 0.07em solid black; background-color: #fff; padding: 3px 6px; cursor: pointer;\n--list-li-hover-background-color | Background color to highlight element when mouse over | Variable | #a6ccff\n--detail-open-custom | Styling to <details> element when it's opened | Mixin | background-color: #cfeaf2;\n--detail-open-summary-custom | Styling to <summary> element when details it's opened | Mixin | animation: sweep .5s ease-in-out;\n--input-search-custom | Styling of input search | Mixin | display: relative; width: 80%; border: none; border-bottom: 2px solid #bababa; margin-bottom: 5px; margin-top: 5px; padding: 5px 10px; font-size: 1rem; font-family: verdana;\n--modal-background-color | Background color of the modal window | Variable | rgba(62, 62, 62, 0.7);\n--modal-window-custom | Styling of modal window | Mixin | min-width: 200px; max-width: 450px; position: relative; margin: 10% auto; padding: 5px 20px 13px 20px; border-radius: 10px; background: #fff; background: -moz-linear-gradient(rgb(175, 202, 218), rgb(126, 160, 192)); background: -webkit-linear-gradient(rgb(175, 202, 218), rgb(126, 160, 192)); background: -o-linear-gradient(rgb(175, 202, 218), rgb(126, 160, 192));\n--modal-input-custom | Style of the <paper-input> element within the modal | Mixin | - \n--footer-btn-edit | Styling for edit button, button are visible when editTable is true | Mixin | background-color:#a6ccff; padding: 8px 30px; border: 0.06em groove; border-radius: 2rem; font-family: verdana; font-size: 1rem;\n--modal-btn-cancel | Styling to cancel button into modal | Mixin | border: 0.05em solid #757575; padding: 8px 15px; background-color: #ededed; color: #000; border-radius: 2em; font-family: verdana; font-size: 14px; font-weight: bolder;\n--modal-btn-save | Styling to save button into modal | Mixin | border: 0.05em solid #757575; padding: 8px 15px; background-color: #51c839; color: #232323; border-radius: 2em; font-family: verdana; font-size: 14px; font-weight: bolder;\n\n## Slots\nId slot | Description\n--------|------------\nslot-over-table | This element is located over the table\nslot-footer-table | This element is located into footer of table\nslot-bottom-table | This element is located in bottom of table\nslot-top-content-modal | This element is located in top of content modal\nslot-bottom-content-modal | This element is located in bottom of content modal\nslot-footer-modal |  This element is located in footer of content modal\n\n## License\nApache License 2004",
       "summary": "",
       "path": "responsive-table.html",
       "properties": [
@@ -611,11 +611,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 315,
+              "line": 400,
               "column": 10
             },
             "end": {
-              "line": 318,
+              "line": 403,
               "column": 11
             }
           },
@@ -633,11 +633,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 323,
+              "line": 408,
               "column": 10
             },
             "end": {
-              "line": 327,
+              "line": 412,
               "column": 11
             }
           },
@@ -656,11 +656,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 329,
+              "line": 414,
               "column": 10
             },
             "end": {
-              "line": 332,
+              "line": 417,
               "column": 11
             }
           },
@@ -678,11 +678,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 334,
+              "line": 419,
               "column": 10
             },
             "end": {
-              "line": 337,
+              "line": 422,
               "column": 11
             }
           },
@@ -700,11 +700,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 339,
+              "line": 424,
               "column": 10
             },
             "end": {
-              "line": 342,
+              "line": 427,
               "column": 11
             }
           },
@@ -722,11 +722,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 344,
+              "line": 429,
               "column": 10
             },
             "end": {
-              "line": 347,
+              "line": 432,
               "column": 11
             }
           },
@@ -744,11 +744,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 349,
+              "line": 434,
               "column": 10
             },
             "end": {
-              "line": 353,
+              "line": 438,
               "column": 11
             }
           },
@@ -767,11 +767,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 355,
+              "line": 440,
               "column": 10
             },
             "end": {
-              "line": 358,
+              "line": 443,
               "column": 11
             }
           },
@@ -789,11 +789,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 360,
+              "line": 445,
               "column": 10
             },
             "end": {
-              "line": 363,
+              "line": 448,
               "column": 11
             }
           },
@@ -811,11 +811,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 365,
+              "line": 450,
               "column": 10
             },
             "end": {
-              "line": 368,
+              "line": 453,
               "column": 11
             }
           },
@@ -833,11 +833,11 @@
           "privacy": "public",
           "sourceRange": {
             "start": {
-              "line": 370,
+              "line": 455,
               "column": 10
             },
             "end": {
-              "line": 373,
+              "line": 458,
               "column": 11
             }
           },
@@ -855,11 +855,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 380,
+              "line": 465,
               "column": 10
             },
             "end": {
-              "line": 383,
+              "line": 468,
               "column": 11
             }
           },
@@ -877,11 +877,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 387,
+              "line": 472,
               "column": 10
             },
             "end": {
-              "line": 390,
+              "line": 475,
               "column": 11
             }
           },
@@ -899,11 +899,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 395,
+              "line": 480,
               "column": 10
             },
             "end": {
-              "line": 398,
+              "line": 483,
               "column": 11
             }
           },
@@ -921,11 +921,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 403,
+              "line": 488,
               "column": 10
             },
             "end": {
-              "line": 406,
+              "line": 491,
               "column": 11
             }
           },
@@ -942,11 +942,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 411,
+              "line": 496,
               "column": 10
             },
             "end": {
-              "line": 414,
+              "line": 499,
               "column": 11
             }
           },
@@ -963,11 +963,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 419,
+              "line": 504,
               "column": 10
             },
             "end": {
-              "line": 422,
+              "line": 507,
               "column": 11
             }
           },
@@ -984,11 +984,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 427,
+              "line": 512,
               "column": 10
             },
             "end": {
-              "line": 430,
+              "line": 515,
               "column": 11
             }
           },
@@ -1005,11 +1005,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 436,
+              "line": 521,
               "column": 10
             },
             "end": {
-              "line": 439,
+              "line": 524,
               "column": 11
             }
           },
@@ -1027,11 +1027,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 443,
+              "line": 528,
               "column": 10
             },
             "end": {
-              "line": 446,
+              "line": 531,
               "column": 11
             }
           },
@@ -1049,11 +1049,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 450,
+              "line": 535,
               "column": 10
             },
             "end": {
-              "line": 453,
+              "line": 538,
               "column": 11
             }
           },
@@ -1067,15 +1067,15 @@
         {
           "name": "_rowsOption",
           "type": "Array | null | undefined",
-          "description": "(Coming soon property) Values to shown in select max rows by page",
+          "description": "(Coming soon property) Values to shown in select max rows by page.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 458,
+              "line": 543,
               "column": 10
             },
             "end": {
-              "line": 461,
+              "line": 546,
               "column": 11
             }
           },
@@ -1089,15 +1089,15 @@
         {
           "name": "_numberPage",
           "type": "number | null | undefined",
-          "description": "(Coming soon property) Page indicator, modified by preview/next",
+          "description": "(Coming soon property) Page indicator, modified by preview/next.",
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 465,
+              "line": 550,
               "column": 10
             },
             "end": {
-              "line": 468,
+              "line": 553,
               "column": 11
             }
           },
@@ -1359,11 +1359,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 476,
+              "line": 561,
               "column": 6
             },
             "end": {
-              "line": 507,
+              "line": 592,
               "column": 7
             }
           },
@@ -3330,11 +3330,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 517,
+              "line": 602,
               "column": 6
             },
             "end": {
-              "line": 525,
+              "line": 610,
               "column": 7
             }
           },
@@ -3363,11 +3363,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 531,
+              "line": 616,
               "column": 6
             },
             "end": {
-              "line": 536,
+              "line": 621,
               "column": 7
             }
           },
@@ -3383,11 +3383,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 542,
+              "line": 627,
               "column": 6
             },
             "end": {
-              "line": 546,
+              "line": 631,
               "column": 7
             }
           },
@@ -3403,11 +3403,31 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 552,
+              "line": 637,
               "column": 6
             },
             "end": {
-              "line": 557,
+              "line": 642,
+              "column": 7
+            }
+          },
+          "metadata": {},
+          "params": [],
+          "return": {
+            "type": "void"
+          }
+        },
+        {
+          "name": "_removeClassClickedHead",
+          "description": "Function to remove class when clicked any header of column.",
+          "privacy": "protected",
+          "sourceRange": {
+            "start": {
+              "line": 648,
+              "column": 6
+            },
+            "end": {
+              "line": 654,
               "column": 7
             }
           },
@@ -3423,11 +3443,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 563,
+              "line": 660,
               "column": 6
             },
             "end": {
-              "line": 569,
+              "line": 666,
               "column": 7
             }
           },
@@ -3443,11 +3463,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 576,
+              "line": 673,
               "column": 6
             },
             "end": {
-              "line": 588,
+              "line": 685,
               "column": 7
             }
           },
@@ -3466,11 +3486,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 596,
+              "line": 693,
               "column": 6
             },
             "end": {
-              "line": 598,
+              "line": 695,
               "column": 7
             }
           },
@@ -3498,11 +3518,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 605,
+              "line": 702,
               "column": 6
             },
             "end": {
-              "line": 637,
+              "line": 737,
               "column": 7
             }
           },
@@ -3522,11 +3542,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 643,
+              "line": 743,
               "column": 6
             },
             "end": {
-              "line": 647,
+              "line": 747,
               "column": 7
             }
           },
@@ -3542,11 +3562,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 654,
+              "line": 754,
               "column": 6
             },
             "end": {
-              "line": 665,
+              "line": 765,
               "column": 7
             }
           },
@@ -3569,11 +3589,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 672,
+              "line": 772,
               "column": 6
             },
             "end": {
-              "line": 682,
+              "line": 782,
               "column": 7
             }
           },
@@ -3593,11 +3613,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 689,
+              "line": 789,
               "column": 6
             },
             "end": {
-              "line": 702,
+              "line": 802,
               "column": 7
             }
           },
@@ -3617,11 +3637,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 708,
+              "line": 808,
               "column": 6
             },
             "end": {
-              "line": 716,
+              "line": 816,
               "column": 7
             }
           },
@@ -3637,11 +3657,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 722,
+              "line": 822,
               "column": 6
             },
             "end": {
-              "line": 724,
+              "line": 824,
               "column": 7
             }
           },
@@ -3657,11 +3677,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 730,
+              "line": 830,
               "column": 6
             },
             "end": {
-              "line": 741,
+              "line": 841,
               "column": 7
             }
           },
@@ -3677,11 +3697,11 @@
           "privacy": "protected",
           "sourceRange": {
             "start": {
-              "line": 748,
+              "line": 848,
               "column": 6
             },
             "end": {
-              "line": 750,
+              "line": 850,
               "column": 7
             }
           },
@@ -4658,11 +4678,11 @@
       "metadata": {},
       "sourceRange": {
         "start": {
-          "line": 306,
+          "line": 391,
           "column": 4
         },
         "end": {
-          "line": 751,
+          "line": 851,
           "column": 5
         }
       },
@@ -4675,11 +4695,11 @@
           "description": "Contains the array of headers, shows in the first row in the table.",
           "sourceRange": {
             "start": {
-              "line": 315,
+              "line": 400,
               "column": 10
             },
             "end": {
-              "line": 318,
+              "line": 403,
               "column": 11
             }
           },
@@ -4691,11 +4711,11 @@
           "description": "Contains the array of value, the values are display into body of table.",
           "sourceRange": {
             "start": {
-              "line": 323,
+              "line": 408,
               "column": 10
             },
             "end": {
-              "line": 327,
+              "line": 412,
               "column": 11
             }
           },
@@ -4707,11 +4727,11 @@
           "description": "Boolean value to indicate if the component contains search input.",
           "sourceRange": {
             "start": {
-              "line": 329,
+              "line": 414,
               "column": 10
             },
             "end": {
-              "line": 332,
+              "line": 417,
               "column": 11
             }
           },
@@ -4723,11 +4743,11 @@
           "description": "Word that show in placeholder of input search, by default the text is \"Ingresa la palabra a buscar\"",
           "sourceRange": {
             "start": {
-              "line": 334,
+              "line": 419,
               "column": 10
             },
             "end": {
-              "line": 337,
+              "line": 422,
               "column": 11
             }
           },
@@ -4739,11 +4759,11 @@
           "description": "Selector of table style, by default \"stripped\" style is selected, some styles  predefined are [stripped, lineal, all-lines].",
           "sourceRange": {
             "start": {
-              "line": 339,
+              "line": 424,
               "column": 10
             },
             "end": {
-              "line": 342,
+              "line": 427,
               "column": 11
             }
           },
@@ -4755,11 +4775,11 @@
           "description": "Text displayed when user don't select row and click/tap in edit button, by default the text is \"Debe seleccionar una fila para poder editarla\".",
           "sourceRange": {
             "start": {
-              "line": 344,
+              "line": 429,
               "column": 10
             },
             "end": {
-              "line": 347,
+              "line": 432,
               "column": 11
             }
           },
@@ -4771,11 +4791,11 @@
           "description": "Boolean value to indicate if the component contains a edit button.",
           "sourceRange": {
             "start": {
-              "line": 349,
+              "line": 434,
               "column": 10
             },
             "end": {
-              "line": 353,
+              "line": 438,
               "column": 11
             }
           },
@@ -4787,11 +4807,11 @@
           "description": "Word that show in button cancel, by default the text is \"Cancelar\".",
           "sourceRange": {
             "start": {
-              "line": 355,
+              "line": 440,
               "column": 10
             },
             "end": {
-              "line": 358,
+              "line": 443,
               "column": 11
             }
           },
@@ -4803,11 +4823,11 @@
           "description": "Word that show in button save, by default the text is \"Guardar\".",
           "sourceRange": {
             "start": {
-              "line": 360,
+              "line": 445,
               "column": 10
             },
             "end": {
-              "line": 363,
+              "line": 448,
               "column": 11
             }
           },
@@ -4819,11 +4839,11 @@
           "description": "Word that show in button edit, by default the text is \"Editar\".",
           "sourceRange": {
             "start": {
-              "line": 365,
+              "line": 450,
               "column": 10
             },
             "end": {
-              "line": 368,
+              "line": 453,
               "column": 11
             }
           },
@@ -4835,11 +4855,11 @@
           "description": "Declare minimum value in pixels to change view between table and list, this property only accept number.",
           "sourceRange": {
             "start": {
-              "line": 370,
+              "line": 455,
               "column": 10
             },
             "end": {
-              "line": 373,
+              "line": 458,
               "column": 11
             }
           },
@@ -4852,7 +4872,92 @@
         "cssVariables": [],
         "selectors": []
       },
-      "slots": [],
+      "slots": [
+        {
+          "description": "",
+          "name": "",
+          "range": {
+            "start": {
+              "line": 235,
+              "column": 6
+            },
+            "end": {
+              "line": 235,
+              "column": 40
+            }
+          }
+        },
+        {
+          "description": "",
+          "name": "",
+          "range": {
+            "start": {
+              "line": 275,
+              "column": 10
+            },
+            "end": {
+              "line": 275,
+              "column": 46
+            }
+          }
+        },
+        {
+          "description": "",
+          "name": "",
+          "range": {
+            "start": {
+              "line": 278,
+              "column": 6
+            },
+            "end": {
+              "line": 278,
+              "column": 42
+            }
+          }
+        },
+        {
+          "description": "",
+          "name": "",
+          "range": {
+            "start": {
+              "line": 281,
+              "column": 10
+            },
+            "end": {
+              "line": 281,
+              "column": 51
+            }
+          }
+        },
+        {
+          "description": "",
+          "name": "",
+          "range": {
+            "start": {
+              "line": 289,
+              "column": 10
+            },
+            "end": {
+              "line": 289,
+              "column": 54
+            }
+          }
+        },
+        {
+          "description": "",
+          "name": "",
+          "range": {
+            "start": {
+              "line": 293,
+              "column": 12
+            },
+            "end": {
+              "line": 293,
+              "column": 48
+            }
+          }
+        }
+      ],
       "tagname": "responsive-table"
     }
   ]
