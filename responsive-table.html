@@ -8,6 +8,12 @@
         display: block;
       }
 
+      .blockInfo{
+        display: inline-flex;
+        border-left: 0.05em solid;
+        padding: 2px 7px;
+      }
+
       /* Style container */
       .table {
         display: block;
@@ -23,48 +29,63 @@
       /* Style table */
       table {
         width: 100%;
+        cursor: pointer;
+        background-color: var(--table-background-color,#fff);
+        border-collapse: collapse;
+        border-spacing: 0px;
       }
 
       table td {
         min-width: 100px;
-        padding: 3px 3px;
+        padding: 3px 6px;
       }
 
-      #head-table th:hover {
-        cursor: pointer;
+      #head-table th{
+        padding: 5px 0px;
       }
 
-      #body-table tr{
-        cursor: pointer;
+      #head-table .up:after{
+        content: var(--table-header-sort-indicator-up," ▲");
+      }
+
+      #head-table .down:after{
+        content: var(--table-header-sort-indicator-down," ▼");
       }
 
       #body-table tr:hover, #body-table .selected td{
-        background-color: #a6ccff;
+        background-color: var(--table-row-selected,#a6ccff);
       }
 
-      /* --Types style table */
-      .stripped thead {
-        background-color:var(--stripped-table-header-background-color, #a6ccff);
-        color:var(--stripped-table-header-color,#333);
-      }
-      .stripped tbody tr:nth-child(odd) {
-        background-color: var(--stripped-table-body-background-color,#ededed);
+      table.stripped thead tr {
+        background-color:#a6ccff;
+        color:#333;
+        border-bottom: 0.15em solid #f3f3f3;
+        @apply --stripped-table-header-custom;
       }
 
-      /* End style table*/
-
-      .hide-block {
-        display: none;
+      table.stripped tbody tr:nth-child(odd) {
+        background-color: #ededed;
+        @apply --striped-table-body-custom;
       }
 
-      .show-block {
-        display: block;
+      table.lineal thead tr {
+        border-bottom: 0.15em solid #b7b7b7;
+        @apply --lineal-table-header-custom;
       }
 
-      .blockInfo{
-        display: inline-flex;
-        border-left: 0.05em solid;
-        padding: 2px 7px;
+      table.lineal tbody tr {
+        border-bottom: 0.08em solid #b7b7b7;
+        @apply --lineal-table-body-custom;
+      }
+
+      table.all-lines thead tr th {
+        border: 0.1em solid black;
+        @apply --all-lines-table-header-custom;
+      }
+
+      table.all-lines tbody tr td {
+        border: 0.1em solid black;
+        @apply --all-lines-table-body-custom;
       }
 
       /* List */
@@ -73,6 +94,7 @@
         margin: 0px 0px;
         padding: 0;
         border: 0.07em solid #bababa;
+        @apply --list-style-custom;
       }
 
       .list-detail li {
@@ -80,19 +102,26 @@
         background-color: #fff;
         padding: 3px 6px;
         cursor: pointer;
+        @apply --list-li-custom;
       }
 
       .list-detail li:hover{
-        background-color: #a6ccff;
+        background-color: var(--list-li-hover-background-color,#a6ccff);
       }
 
       .list-detail li:first-child {
         border-top: 0em
       }
 
-      /* Styling summary */
+      /* Styling details */
+      details[open]{
+        background-color: #cfeaf2;
+        @apply --detail-open-custom;
+      }
+
       details[open] summary~* {
         animation: sweep .5s ease-in-out;
+        @apply --detail-open-summary-custom;
       }
 
       @keyframes sweep {
@@ -107,17 +136,11 @@
         }
       }
 
-      details[open]{
-        background-color: #cfeaf2;
-      }
-      details[open] summary {
-        border-bottom: 0.07em solid black;
-      }
-      
       /* Search element */
       #search-input{
         width: 100%;
       }
+
       #search-input input{
         display: relative;
         width: 80%;
@@ -128,6 +151,7 @@
         padding: 5px 10px;
         font-size: 1rem;
         font-family: verdana;
+        @apply --input-search-custom;
       }
 
       /* Footer table */
@@ -136,21 +160,7 @@
         border: 0.06em solid #bababa;
         padding: 5px 10px;
         justify-content: space-around;
-      }
-      .pagination-style > #info-paginator{
-        display:inline-flex;
-        box-sizing: content-box;
-      }
-      #info-paginator > select{
-        border: none;
-      }
-      
-      .pagination-style > #selector-row-show{
-        display: inline-flex;
-        box-sizing: content-box;
-      }
-      #selector-row-show > select{
-        border: none;
+        @apply --footer-table-style;
       }
 
       /* Modal element */
@@ -161,7 +171,7 @@
         right: 0;
         bottom: 0;
         left: 0;
-        background: rgba(0,0,0,0.8);
+        background: var(--modal-background-color,rgba(62, 62, 62, 0.7));
         z-index: 99999;
         opacity:0;
         -webkit-transition: opacity 400ms ease-in;
@@ -177,44 +187,53 @@
         padding: 5px 20px 13px 20px;
         border-radius: 10px;
         background: #fff;
-        background: -moz-linear-gradient(#fff, #999);
-        background: -webkit-linear-gradient(#fff, #999);
-        background: -o-linear-gradient(#fff, #999);
+        background: -moz-linear-gradient(rgb(255, 255, 255), rgb(192, 192, 192));
+        background: -webkit-linear-gradient(rgb(255, 255, 255), rgb(192, 192, 192));
+        background: -o-linear-gradient(rgb(255, 255, 255), rgb(192, 192, 192));
+        @apply --modal-window-custom;
       }
-      .close {
-        background: #606061;
-        color: #FFFFFF;
-        line-height: 25px;
-        position: absolute;
-        right: -12px;
-        text-align: center;
-        top: -10px;
-        width: 24px;
-        text-decoration: none;
-        font-weight: bold;
-        -webkit-border-radius: 12px;
-        -moz-border-radius: 12px;
-        border-radius: 12px;
-        -moz-box-shadow: 1px 1px 3px #000;
-        -webkit-box-shadow: 1px 1px 3px #000;
-        box-shadow: 1px 1px 3px #000;
+      .modal-input {
+        @apply --modal-input-custom;
       }
-      .close:hover { background: #00d9ff; }
 
       /* Button style */
       .btn-edit-modal{
         background-color:#a6ccff;
         padding: 8px 30px;
-      border: 0.06em groove;
-      border-radius: 2rem;
-      font-family: verdana;
-      font-size: 1rem;
+        border: 0.06em groove;
+        border-radius: 2rem;
+        font-family: verdana;
+        font-size: 1rem;
+        @apply --footer-btn-edit;
+      }
+      .btn-cancel{
+        border: 0.05em solid #757575;
+        padding: 8px 15px;
+        background-color: #ededed;
+        color: #000;
+        border-radius: 2em;
+        font-family: verdana;
+        font-size: 14px;
+        font-weight: bolder;
+        @apply --modal-btn-cancel;
+      }
+      .btn-save{
+        border: 0.05em solid #757575;
+        padding: 8px 15px;
+        background-color: #51c839;
+        color: #232323;
+        border-radius: 2em;
+        font-family: verdana;
+        font-size: 14px;
+        font-weight: bolder;
+        @apply --modal-btn-save;
       }
     </style>
     <div class="container">
       <div id="search-input" hidden$="[[!search]]">
         <input type="text" value="" placeholder$="[[searchPlaceholder]]" on-keyup="_changeSearch" />
       </div>
+      <slot id="slot-over-table"></slot>
       <div id="containerTable" class="table">
         <div id="when-large">
           <table class$="[[styleTable]]">
@@ -254,31 +273,25 @@
           <div class="ediTable" hidden$="[[!editTable]]">
             <button type="button" class="btn-edit-modal" on-click="_openModal">[[textEditBtn]]</button>
           </div>
-          <div id="info-paginator" hidden$="[[!_pagination]]">
-            [[_textPaginator]]: <select></select>
-          </div>
-          <div id="selector-row-show" hidden$="[[!_pagination]]">
-            [[_textRowsSelector]]:
-            <select on-change="_reListLimit">
-              <template is="dom-repeat" items="[[_rowsOption]]">
-                <option value="[[item]]">[[item]]</option>
-              </template>
-            </select>
-          </div>
+          <slot id="slot-footer-table"></slot>
         </div>
       </div>
+      <slot id="slot-bottom-table"></slot>
       <div id="modalDialogPreview" class="modalDialog">
         <div>
+          <slot id="slot-top-content-modal"></slot>
           <template is="dom-repeat" items="[[_rowSelectedElement]]" as="rowSeltd">
             <form id="form-edit-[[rowSeltd.rowIndex]]">
               <template is="dom-repeat" items="[[rowSeltd.data]]">
-                <paper-input label="[[_getHeader(headers, index)]]" value="[[item.1]]"></paper-input>
+                <paper-input class="modal-input" label="[[_getHeader(headers, index)]]" value="[[item.1]]"></paper-input>
               </template>
             </form>
           </template>
+          <slot id="slot-bottom-content-modal"></slot>
           <div class="footer-modal">
             <button type="button" class="btn-cancel" on-click="_closeModal">[[textCancelBtn]]</button>
-            <button type="button" class="btn-cancel" on-click="_saveData">[[textSaveBtn]]</button>
+            <button type="button" class="btn-save" on-click="_saveData">[[textSaveBtn]]</button>
+            <slot id="slot-footer-modal"></slot>
           </div>
         </div>
       </div>
@@ -391,7 +404,7 @@
           },
           /**
           * Contain the full data of row selected, the array only contains a one Object element.
-          @type {[{id: Number, rowIndex: Number, data: Array, headers: Array}]}
+          * @type {[{id: Number, rowIndex: Number, data: Array, headers: Array}]}
           */
           _rowSelectedElement: {
             type: Array,
@@ -453,7 +466,7 @@
             value: false
           },
           /**
-          * (Coming soon property) Values to shown in select max rows by page
+          * (Coming soon property) Values to shown in select max rows by page.
           * @type {[Number,...]}
           */
           _rowsOption: {
@@ -461,7 +474,7 @@
             value: () => [10, 20, 30]
           },
           /**
-          * (Coming soon property) Page indicator, modified by preview/next
+          * (Coming soon property) Page indicator, modified by preview/next.
           */
           _numberPage: {
             type: Number,
@@ -558,6 +571,18 @@
       }
 
       /**
+      * Function to remove class when clicked any header of column.
+      * @return {void}
+      */
+      _removeClassClickedHead() {
+        const header = this._headerTableElement.querySelectorAll("th");
+        this.set("_rowSelectedElement", []);
+        for (const toCleanClell of header) {
+          toCleanClell.className = "";
+        }
+      }
+
+      /**
       * Function to close tag <details> when is open into list.
       * @return {void}
       */
@@ -604,6 +629,7 @@
       * @return {void}
       */
       _reOrderBy(event) {
+        this._removeClassClickedHead();
         this._removeClassSelected();
         const directriz = event.target.id.split("_");
         if ((Number(directriz[1]) + 1) <= this._columnValues[0].data.length) {
@@ -611,6 +637,7 @@
           let newOrder = [];
           if (directriz[2] === "asc") {
             event.target.id = directriz[0] + "_" + directriz[1] + "_desc";
+            event.target.className = "up";
             newOrder = this.columns.sort(function (a, b) {
               if (a[columnOrder] > b[columnOrder]) {
                 return 1;
@@ -623,6 +650,7 @@
           }
           if (directriz[2] === "desc") {
             event.target.id = directriz[0] + "_" + directriz[1] + "_asc";
+            event.target.className = "down";
             newOrder = this.columns.reverse(function (a, b) {
               if (a[columnOrder] > b[columnOrder]) {
                 return 1;
