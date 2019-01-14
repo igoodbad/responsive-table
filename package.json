@@ -1,6 +1,6 @@
 {
   "name": "@igoodbad/responsive-table",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "description": "Table full responsive in any devices",
   "main": "responsive-table.js",
   "private": false,
