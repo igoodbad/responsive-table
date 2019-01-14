@@ -626,7 +626,6 @@ class ResponsiveTable extends PolymerElement {
   */
   _clearStage() {
     if (this._bodyTableElement) {
-      this._removeClassClickedHead();
       this._removeClassSelected();
       this._removeLiSelected();
     }
