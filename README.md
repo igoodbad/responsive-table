@@ -1,6 +1,23 @@
 # \<responsive-table\>
 Table full responsive in any devices  
-[![Platform](https://img.shields.io/badge/Polymer-3.x.x-blue.svg)]() [![Build Status](https://travis-ci.org/igoodbad/responsive-table.svg?branch=master)](https://travis-ci.org/igoodbad/responsive-table)
+[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/owner/my-element) [![Platform](https://img.shields.io/badge/Polymer-3.x.x-blue.svg)]() [![Build Status](https://travis-ci.org/igoodbad/responsive-table.svg?branch=master)](https://travis-ci.org/igoodbad/responsive-table)
+
+## Demo
+<!--
+```
+<custom-element-demo>
+  <template>
+    <script type="module">
+      import '@igoodbad/responsive-table/responsive-table.js';
+    </script>
+  </template>
+</custom-element-demo>
+```
+-->
+```html
+<responsive-table></responsive-table>
+```
+
 ## Properties
 ### Public properties
 Name | Type | Description | Default |
