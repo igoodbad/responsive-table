@@ -78,3 +78,6 @@ slot-bottom-table | This element is located in bottom of table
 slot-top-content-modal | This element is located in top of content modal
 slot-bottom-content-modal | This element is located in bottom of content modal
 slot-footer-modal |  This element is located in footer of content modal
+
+## License
+Apache License 2004
