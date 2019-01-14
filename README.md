@@ -1,6 +1,6 @@
 # \<responsive-table\>
 Table full responsive in any devices  
-[![Platform](https://img.shields.io/badge/Polymer-2.x.x-blue.svg)]() [![Build Status](https://travis-ci.org/igoodbad/responsive-table.svg?branch=master)](https://travis-ci.org/igoodbad/responsive-table)
+[![Platform](https://img.shields.io/badge/Polymer-3.x.x-blue.svg)]() [![Build Status](https://travis-ci.org/igoodbad/responsive-table.svg?branch=master)](https://travis-ci.org/igoodbad/responsive-table)
 ## Properties
 ### Public properties
 Name | Type | Description | Default |
