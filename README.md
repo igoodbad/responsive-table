@@ -8,7 +8,7 @@ Table full responsive in any devices
 <custom-element-demo>
   <template>
     <script type="module">
-      import '@igoodbad/responsive-table/responsive-table.js';
+      import './responsive-table/responsive-table.js';
     </script>
   </template>
 </custom-element-demo>
